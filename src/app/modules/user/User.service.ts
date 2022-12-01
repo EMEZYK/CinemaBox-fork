@@ -29,7 +29,6 @@ export class UserService {
         return {
           data: result[0],
         };
-        return null;
       }
     } catch (err) {
       return null;
