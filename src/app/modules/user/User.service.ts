@@ -115,7 +115,7 @@ export class UserService {
                  phone_number as phone,
                  first_name   as firstName,
                  last_name    as lastName,
-                 role,
+                 role
           FROM users
           ORDER BY ${sortBy}
       `);
