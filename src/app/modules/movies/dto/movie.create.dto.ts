@@ -26,10 +26,6 @@ export class CreateMovieDto {
 
   @IsNotEmpty()
   @IsString()
-  shortDescription: string;
-
-  @IsNotEmpty()
-  @IsString()
   img: string;
 
   @IsNotEmpty()

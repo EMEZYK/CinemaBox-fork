@@ -8,10 +8,25 @@ import { ShowingUpdateData } from './showing.types';
 @Injectable()
 export class ShowingService {
   constructor(private readonly dbService: DBService) {}
-
+  
   async createShowing(createShowingDto: CreateShowingDto) {
     try {
-      const { movie_id, hall_id, date_start, duration } = createShowingDto;
+      const { movie_id, hall_id, date_start } = createShowingDto;
+
+      const movieDuration = await this.dbService.query(`
+      SELECT
+          duration
+      FROM
+          movies
+      WHERE
+          movie_id = ${movie_id}
+    `)
+
+      if (!movieDuration[0].duration) {
+        return {
+          isError: true,
+        };
+      }
 
       const result = await this.dbService.query(`
         INSERT
@@ -22,12 +37,10 @@ export class ShowingService {
               (${movie_id}, ${hall_id}, '${dayjs(
         date_start,
       ).format()}', '${dayjs(date_start)
-        .add(duration, 'minute')
-        .format()}', ${duration}, ${15})
+        .add(movieDuration[0].duration, 'minute')
+        .format()}', ${movieDuration[0].duration}, ${15})
         RETURNING showings_id as id
       `);
-
-      console.log(result);
 
       return {
         isError: false,
@@ -56,18 +69,17 @@ export class ShowingService {
             showings
         WHERE
             showings_id = ${id}
-      `)
+      `);
 
       return {
         isError: false,
         data: result[0],
-      }
-
+      };
     } catch (err) {
       return {
         isError: true,
         data: err,
-      }
+      };
     }
   }
 
@@ -117,17 +129,12 @@ export class ShowingService {
       return {
         isError: true,
         data: err,
-      }
+      };
     }
   }
 
   async updateShowing(id: number, updateShowingDto: ShowingUpdateData) {
-    const {
-      movie_id,
-      hall_id,
-      date_start,
-      duration
-    } = updateShowingDto;
+    const { movie_id, hall_id, date_start, duration } = updateShowingDto;
 
     try {
       const result = await this.dbService.query(`
@@ -136,22 +143,28 @@ export class ShowingService {
         SET
             movie_id = ${movie_id ? `${movie_id}` : 'movie_id'},
             hall_id = ${hall_id ? `${hall_id}` : 'hall_id'},
-            date_start = ${date_start ? `'${dayjs(date_start).format()}'` : 'date_start'},
-            date_end = ${date_start ? `'${dayjs(date_start).add(duration, 'minute').format()}'` : 'date_end'},
+            date_start = ${
+              date_start ? `'${dayjs(date_start).format()}'` : 'date_start'
+            },
+            date_end = ${
+              date_start
+                ? `'${dayjs(date_start).add(duration, 'minute').format()}'`
+                : 'date_end'
+            },
             duration = ${duration ? `${duration}` : 'duration'}
         WHERE
             showings_id = ${id}
-      `)
+      `);
 
       return {
         isError: false,
         data: result,
-      }
+      };
     } catch (err) {
       return {
         isError: true,
         data: err,
-      }
+      };
     }
   }
 }

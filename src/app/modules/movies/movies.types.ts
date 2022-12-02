@@ -1,7 +1,6 @@
 type MoviePostData = {
   title: string
   description: string
-  shortDescription: string
   isPremiere: boolean
   duration: string
   category: string[]

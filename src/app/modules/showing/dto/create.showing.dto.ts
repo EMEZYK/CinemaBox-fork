@@ -12,8 +12,4 @@ export class CreateShowingDto {
   @IsNotEmpty()
   @IsString()
   date_start: string;
-
-  @IsNotEmpty()
-  @IsNumber()
-  duration: number;
 }
