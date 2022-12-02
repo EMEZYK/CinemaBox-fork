@@ -67,7 +67,6 @@ export class UserController {
     };
   }
 
-  @Public()
   @Patch(':id')
   async updateUser(@Param('id') id: number, @Body() userUpdateDto: UserUpdateDto) {
     const response = await this.userService.updateUser(id, userUpdateDto);

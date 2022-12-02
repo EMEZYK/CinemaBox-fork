@@ -28,6 +28,15 @@ const ResponseDictionary = {
   showingNotUpdated: 'Wystąpił błąd podczas aktualizacji seansu',
   showingDeleted: 'Seans został pomyślnie usunięty',
   showingNotDeleted: 'Wystąpił błąd',
+  // halls
+  hallsError: 'Nie udało się pobrać listy sal',
+  hallNotFound: 'Nie znaleziono sali o podanym id',
+  hallCreated: 'Sala została pomyślnie dodana',
+  hallNotCreated: 'Wystąpił błąd podczas dodawania sali',
+  hallUpdated: 'Sala została pomyślnie zaktualizowana',
+  hallNotUpdated: 'Wystąpił błąd podczas aktualizacji sali',
+  hallDeleted: 'Sala została pomyślnie usunięta',
+  hallNotDeleted: 'Wystąpił błąd podczas usuwania sali',
 } as const
 
 export default ResponseDictionary

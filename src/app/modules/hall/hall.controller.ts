@@ -1,34 +1,85 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { HallService } from './hall.service';
-import { CreateHallDto } from './dto/create-hall.dto';
-import { UpdateHallDto } from './dto/update-hall.dto';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpException,
+} from '@nestjs/common';
 
-@Controller('hall')
+import { HallService } from './hall.service';
+import { CreateHallDto } from './dto/create.hall.dto';
+import { UpdateHallDto } from './dto/update.hall.dto';
+import ResponseDictionary from 'src/app/dictionaries/Response.dictionary';
+
+@Controller('halls')
 export class HallController {
   constructor(private readonly hallService: HallService) {}
 
   @Post()
-  create(@Body() createHallDto: CreateHallDto) {
-    return this.hallService.create(createHallDto);
+  async createHall(@Body() createHallDto: CreateHallDto) {
+    const { isError } = await this.hallService.createHall(createHallDto);
+
+    if (isError) {
+      throw new HttpException(ResponseDictionary.hallNotCreated, 400);
+    }
+
+    return {
+      message: ResponseDictionary.hallCreated,
+    };
   }
 
   @Get()
-  findAll() {
-    return this.hallService.findAll();
+  async getHalls() {
+    const response = await this.hallService.getHalls();
+
+    if (!response) {
+      throw new HttpException(ResponseDictionary.hallsError, 404);
+    }
+
+    return {
+      halls: response,
+    };
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.hallService.findOne(+id);
+  async getHall(@Param('id') id: number) {
+    const response = await this.hallService.getHall(id);
+
+    if (!response) {
+      throw new HttpException(ResponseDictionary.hallNotFound, 404);
+    }
+
+    return {
+      hall: response,
+    };
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateHallDto: UpdateHallDto) {
-    return this.hallService.update(+id, updateHallDto);
+  async updateHall(@Param('id') id: number, @Body() updateHallDto: UpdateHallDto) {
+    const response = await this.hallService.updateHall(id, updateHallDto);
+
+    if (!response) {
+      throw new HttpException(ResponseDictionary.hallNotUpdated, 400);
+    }
+
+    return {
+      message: ResponseDictionary.hallUpdated,
+    };
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.hallService.remove(+id);
+  async deleteHall(@Param('id') id: number) {
+    const response = await this.hallService.deleteHall(id);
+
+    if (!response) {
+      throw new HttpException(ResponseDictionary.hallNotDeleted, 400);
+    }
+
+    return {
+      message: ResponseDictionary.hallDeleted,
+    };
   }
 }

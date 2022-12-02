@@ -70,7 +70,6 @@ export class MoviesService {
       const {
         title,
         description,
-        shortDescription,
         isPremiere,
         duration,
         category,
