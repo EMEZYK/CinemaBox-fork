@@ -21,7 +21,6 @@ async function bootstrap() {
     .setTitle('Cinema-box')
     .setDescription('Cinema-box API')
     .setVersion('0.1.0')
-    .addTag('cinema')
     .build();
 
   const document = SwaggerModule.createDocument(app, con);

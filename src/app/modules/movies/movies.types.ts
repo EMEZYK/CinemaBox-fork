@@ -9,9 +9,16 @@ type MoviePostData = {
   img: string
   price: number
   rating: number
-  hours: string[]
+}
+
+type MovieUpdateData = {
+  title?: string
+  description?: string
+  category?: string[]
+  age?: string
 }
 
 export {
-  MoviePostData
+  MoviePostData,
+  MovieUpdateData,
 }

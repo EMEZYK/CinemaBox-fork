@@ -7,6 +7,8 @@ import { DbModule } from './modules/db/db.module';
 import { ReservationsModule } from './modules/reservations/reservations.module';
 import { UserModule } from './modules/user/user.module';
 import { MoviesModule } from './modules/movies/movies.module';
+import { ShowingModule } from './modules/showing/showing.module';
+import { HallModule } from './modules/hall/hall.module';
 
 @Module({
   imports: [
@@ -14,7 +16,9 @@ import { MoviesModule } from './modules/movies/movies.module';
     UserModule,
     AuthModule,
     ReservationsModule,
-    MoviesModule
+    MoviesModule,
+    ShowingModule,
+    HallModule
   ],
   controllers: [AppController],
   providers: [AppService],

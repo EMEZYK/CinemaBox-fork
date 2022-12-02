@@ -19,6 +19,15 @@ const ResponseDictionary = {
   movieNotUpdated: 'Wystąpił błąd podczas aktualizacji filmu',
   movieDeleted: 'Film został pomyślnie usunięty',
   movieNotDeleted: 'Wystąpił błąd podczas usuwania filmu',
+  // showings
+  showingsError: 'Nie udało się pobrać listy seansów',
+  showingNotFound: 'Nie znaleziono seansu o podanym id',
+  showingCreated: 'Seans został pomyślnie dodany',
+  showingNotCreated: 'Wystąpił błąd podczas dodawania seansu',
+  showingUpdated: 'Seans został pomyślnie zaktualizowany',
+  showingNotUpdated: 'Wystąpił błąd podczas aktualizacji seansu',
+  showingDeleted: 'Seans został pomyślnie usunięty',
+  showingNotDeleted: 'Wystąpił błąd',
 } as const
 
 export default ResponseDictionary

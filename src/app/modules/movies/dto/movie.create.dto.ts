@@ -39,8 +39,4 @@ export class CreateMovieDto {
   @IsNotEmpty()
   @IsNumber()
   rating: number;
-
-  @IsNotEmpty()
-  @IsArray()
-  hours: string[];
 }

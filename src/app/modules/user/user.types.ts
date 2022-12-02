@@ -19,8 +19,17 @@ type UserEmailAndPhone = {
   phoneNumber?: string;
 }
 
+type userPatchData = {
+  email?: string;
+  phoneNumber?: string;
+  firstName?: string;
+  lastName?: string;
+  password?: string;
+}
+
 export {
   UserPostData,
   User,
-  UserEmailAndPhone
+  UserEmailAndPhone,
+  userPatchData
 }
