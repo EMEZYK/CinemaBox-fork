@@ -1,4 +1,13 @@
-import { Body, Controller, Delete, Get, HttpException, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpException,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 
 import ResponseDictionary from 'src/app/dictionaries/Response.dictionary';
 import { CreateMovieDto } from './dto/movie.create.dto';
@@ -7,9 +16,7 @@ import { MoviesService } from './movies.service';
 
 @Controller('/movies')
 export class MoviesController {
-  constructor(
-    private readonly movieService: MoviesService
-  ) {}
+  constructor(private readonly movieService: MoviesService) {}
 
   @Get(':id')
   async getMovie(@Param('id') id: number) {
@@ -65,7 +72,10 @@ export class MoviesController {
   }
 
   @Patch(':id')
-  async updateMovie(@Param('id') id: number, @Body() updateMovieDto: updateMovieDto) {
+  async updateMovie(
+    @Param('id') id: number,
+    @Body() updateMovieDto: updateMovieDto,
+  ) {
     const response = await this.movieService.updateMovie(id, updateMovieDto);
 
     if (!response) {
@@ -76,5 +86,4 @@ export class MoviesController {
       message: ResponseDictionary.movieUpdated,
     };
   }
-
 }
