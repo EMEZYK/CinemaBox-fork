@@ -68,7 +68,10 @@ export class UserController {
   }
 
   @Patch(':id')
-  async updateUser(@Param('id') id: number, @Body() userUpdateDto: UserUpdateDto) {
+  async updateUser(
+    @Param('id') id: number,
+    @Body() userUpdateDto: UserUpdateDto,
+  ) {
     const response = await this.userService.updateUser(id, userUpdateDto);
 
     if (!response) {
@@ -90,6 +93,6 @@ export class UserController {
 
     return {
       message: ResponseDictionary.userDeleted,
-    }
+    };
   }
 }

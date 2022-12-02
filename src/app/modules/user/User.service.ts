@@ -4,6 +4,7 @@ import { config } from 'dotenv';
 import { DBService } from '../db/db.service';
 import { UserPostData, userPatchData } from './user.types';
 
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const jwt = require('jsonwebtoken');
 
 config();
@@ -22,14 +23,14 @@ export class UserService {
           return {
             statusCode: 401,
             message: ['Nieautoryzowany'],
-          }
+          };
         }
 
         return {
           statusCode: 200,
           message: ['Autoryzacja poprawna'],
           data: decoded,
-        }
+        };
       });
 
       const userId = await this.dbService.query(`
@@ -43,7 +44,7 @@ export class UserService {
             users
         WHERE
             email = '${result?.data?.email}'
-      `)
+      `);
 
       return {
         email: result?.data?.email,
@@ -52,17 +53,16 @@ export class UserService {
         lastName: userId[0].lastname,
         userId: userId[0].user_id,
         role: userId[0].role,
-      }
-
+      };
     } catch (err) {
       return {
         statusCode: 500,
         message: ['Internal server error'],
-      }
+      };
     }
   }
 
-  async getUserByEmail(email: string): Promise<{password: string} | null> {
+  async getUserByEmail(email: string): Promise<{ password: string } | null> {
     try {
       const result = await this.dbService.query(`
       SELECT 
@@ -74,7 +74,7 @@ export class UserService {
       WHERE 
           email = '${email}'
     `);
-      
+
       if (Array.isArray(result) && result.length > 0) {
         return result[0];
       }
@@ -107,14 +107,15 @@ export class UserService {
     }
   }
 
-  async getUsers(sortBy: string = 'user_id') {
+  async getUsers(sortBy = 'user_id') {
     try {
       const result = await this.dbService.query(`
           SELECT user_id      as id,
                  email,
                  phone_number as phone,
                  first_name   as firstName,
-                 last_name    as lastName
+                 last_name    as lastName,
+                 role,
           FROM users
           ORDER BY ${sortBy}
       `);
@@ -137,9 +138,9 @@ export class UserService {
       const result = await this.dbService.queryOne(`
         INSERT
         INTO
-            users (email, phone_number, first_name, last_name, "password", role)
+            users (email, phone_number, first_name, last_name, "password", role, is_active)
         VALUES
-            ('${email}', '${phoneNumber}', '${firstName}', '${lastName}', '${password}', '${0}')
+            ('${email}', '${phoneNumber}', '${firstName}', '${lastName}', '${password}', '${0}', true)
         RETURNING user_id as id
       `);
 
