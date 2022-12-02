@@ -15,13 +15,12 @@ export class MoviesService {
                 description,
                 is_premiere as isPremiere,
                 duration,
-                category,
+                genre,
                 age,
                 short_description as shortDescription,
                 img,
                 price,
-                rating,
-                hours
+                rating
         FROM movies
         WHERE movie_id = ${id}
       `);
@@ -36,7 +35,7 @@ export class MoviesService {
     }
   }
 
-  async getMovies(sortBy: string = 'movie_id') {
+  async getMovies(sortBy = 'movie_id') {
     try {
       const result = await this.dbService.query(`
       SELECT movie_id as id,
@@ -44,13 +43,12 @@ export class MoviesService {
               description,
               is_premiere as isPremiere,
               duration,
-              category,
+              genre,
               age,
               short_description as shortDescription,
               img,
               price,
-              rating,
-              hours
+              rating
       FROM movies
       ORDER BY ${sortBy}
       `);
@@ -72,7 +70,7 @@ export class MoviesService {
         description,
         isPremiere,
         duration,
-        category,
+        genre,
         age,
         img,
         price,
@@ -83,12 +81,14 @@ export class MoviesService {
         INSERT
         INTO 
             movies 
-                (title, description, short_description, is_premiere, duration, category, age, img, price, rating)
+                (title, description, short_description, is_premiere, duration, genre, age, img, price, rating)
         VALUES
             ('${title}', '${description}', '${description.slice(
         0,
         100,
-      )}', ${isPremiere}, '${duration}', ARRAY['${category}'], '${age}', '${img}', ${price}, ${rating})
+      )}', ${isPremiere}, '${duration}', ARRAY['${genre}'], '${age}', '${img}', ${
+        price ? `${price}` : 22
+      }, ${rating})
         RETURNING movie_id as id
       `);
 
@@ -106,7 +106,7 @@ export class MoviesService {
 
   async updateMovie(id: number, movieUpdateData: MovieUpdateData) {
     try {
-      const { title, description, category, age } = movieUpdateData;
+      const { title, description, genre, age } = movieUpdateData;
 
       const result = await this.dbService.query(`
         UPDATE
@@ -119,7 +119,7 @@ export class MoviesService {
                 ? `'${description.slice(0, 100)}'`
                 : 'short_description'
             },
-            category = ${category ? `'${category}'` : 'category'},
+            genere = ${genre ? `'${genre}'` : 'category'},
             age = ${age ? `'${age}'` : 'age'}
         WHERE
             movie_id = ${id}

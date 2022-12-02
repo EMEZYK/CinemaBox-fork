@@ -83,7 +83,7 @@ export class ShowingService {
     }
   }
 
-  async getShowings(sortBy: string = 'showings_id') {
+  async getShowings(sortBy = 'showings_id') {
     try {
       const response = await this.dbService.query(`
         SELECT
@@ -105,10 +105,6 @@ export class ShowingService {
     } catch (err) {
       return null;
     }
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} showing`;
   }
 
   async deleteShowing(id: number) {

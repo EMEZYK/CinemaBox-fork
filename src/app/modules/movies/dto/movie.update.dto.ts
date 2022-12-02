@@ -11,7 +11,7 @@ export class updateMovieDto {
 
   @IsNotEmpty()
   @IsArray()
-  category?: string[];
+  genre?: string[];
 
   @IsNotEmpty()
   @IsString()

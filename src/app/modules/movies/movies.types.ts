@@ -3,7 +3,7 @@ type MoviePostData = {
   description: string
   isPremiere: boolean
   duration: string
-  category: string[]
+  genre: string[]
   age: string
   img: string
   price: number
@@ -13,7 +13,7 @@ type MoviePostData = {
 type MovieUpdateData = {
   title?: string
   description?: string
-  category?: string[]
+  genre?: string[]
   age?: string
 }
 

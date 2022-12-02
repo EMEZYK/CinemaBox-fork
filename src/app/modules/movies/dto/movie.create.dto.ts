@@ -1,4 +1,4 @@
-import { IsArray, IsBoolean, IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsArray, IsBoolean, IsNotEmpty, IsNumber, IsOptional, IsString } from "class-validator";
 
 export class CreateMovieDto {
   @IsNotEmpty()
@@ -18,7 +18,7 @@ export class CreateMovieDto {
 
   @IsNotEmpty()
   @IsArray()
-  category: string[];
+  genre: string[];
 
   @IsNotEmpty()
   @IsString()
@@ -28,11 +28,11 @@ export class CreateMovieDto {
   @IsString()
   img: string;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   price: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   rating: number;
 }
