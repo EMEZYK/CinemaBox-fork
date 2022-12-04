@@ -36,6 +36,7 @@ export class HallService {
 
       const rowsArray = alphabet.slice(0, +rows).split('');
       const columnsArray = Array.from({ length: +columns }, (_, i) => i + 1);
+      const capacity = rows * columns;
 
       const result = await this.dbService.query(`
         INSERT
@@ -43,9 +44,7 @@ export class HallService {
             halls
                 (hall_no, rows, columns, capacity)
         VALUES
-            (${hall_no}, ARRAY['${rowsArray}'], ARRAY['${columnsArray}'], ${
-        rows * columns
-      })
+            (${hall_no}, ARRAY['${rowsArray}'], ARRAY['${columnsArray}'], ${capacity})
         RETURNING
             hall_id as id
       `);
@@ -62,7 +61,7 @@ export class HallService {
     }
   }
 
-  async getHalls(sortBy: string = 'hall_id') {
+  async getHalls(sortBy = 'hall_id') {
     try {
       const result = await this.dbService.query(`
         SELECT
@@ -120,7 +119,10 @@ export class HallService {
     const { rows, columns } = updateHallData;
 
     const updatedRowsArray = alphabet.slice(0, +rows).split('');
-    const updatedColumnsArray = Array.from({ length: +columns }, (_, i) => i + 1);
+    const updatedColumnsArray = Array.from(
+      { length: +columns },
+      (_, i) => i + 1,
+    );
 
     try {
       const result = await this.dbService.query(`
@@ -131,14 +133,13 @@ export class HallService {
             columns = ${columns ? `ARRAY['${updatedColumnsArray}']` : 'columns'}
         WHERE
             hall_id = ${id}
-      `)
+      `);
 
       return {
         isError: false,
         data: result,
-      }
-
-    } catch(err) {
+      };
+    } catch (err) {
       return {
         isError: true,
         data: err,
