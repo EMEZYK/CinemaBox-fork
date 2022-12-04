@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 
-import { UpdateHallDto } from './dto/update.hall.dto';
 import { DBService } from '../db/db.service';
 import { CreateHallData, UpdateHallData } from './hall.types';
 
@@ -42,9 +41,11 @@ export class HallService {
         INSERT
         INTO
             halls
-                (hall_no, rows, columns)
+                (hall_no, rows, columns, capacity)
         VALUES
-            (${hall_no}, ARRAY['${rowsArray}'], ARRAY['${columnsArray}'])
+            (${hall_no}, ARRAY['${rowsArray}'], ARRAY['${columnsArray}'], ${
+        rows * columns
+      })
         RETURNING
             hall_id as id
       `);

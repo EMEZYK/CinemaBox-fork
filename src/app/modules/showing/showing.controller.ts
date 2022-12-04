@@ -15,7 +15,7 @@ import ResponseDictionary from 'src/app/dictionaries/Response.dictionary';
 import { Public } from 'src/app/declarations/isPublic';
 import { UpdateShowingDto } from './dto/update.showing.dto';
 
-@Controller('showing')
+@Controller('showings')
 export class ShowingController {
   constructor(private readonly showingService: ShowingService) {}
 

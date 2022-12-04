@@ -92,6 +92,7 @@ export class MoviesService {
         RETURNING movie_id as id
       `);
 
+      console.log(result[0]);
       return {
         data: result[0],
         isError: false,

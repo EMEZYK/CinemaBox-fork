@@ -8,19 +8,19 @@ import { ShowingUpdateData } from './showing.types';
 @Injectable()
 export class ShowingService {
   constructor(private readonly dbService: DBService) {}
-  
+
   async createShowing(createShowingDto: CreateShowingDto) {
     try {
       const { movie_id, hall_id, date_start } = createShowingDto;
 
       const movieDuration = await this.dbService.query(`
-      SELECT
-          duration
-      FROM
-          movies
-      WHERE
-          movie_id = ${movie_id}
-    `)
+        SELECT
+            duration
+        FROM
+            movies
+        WHERE
+            movie_id = ${movie_id}
+    `);
 
       if (!movieDuration[0].duration) {
         return {

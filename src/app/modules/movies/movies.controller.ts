@@ -47,7 +47,9 @@ export class MoviesController {
 
   @Post()
   async createMovie(@Body() createMovieDto: CreateMovieDto) {
-    const { isError } = await this.movieService.createMovie(createMovieDto);
+    const { isError, data } = await this.movieService.createMovie(
+      createMovieDto,
+    );
 
     if (isError) {
       throw new HttpException(ResponseDictionary.movieNotCreated, 400);
