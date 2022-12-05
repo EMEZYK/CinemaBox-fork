@@ -59,7 +59,6 @@ export class ShowingService {
       const result = await this.dbService.query(`
         SELECT
             showing_id as id,
-            movie_id as movieId,
             movie.title as movieTitle,
             movie.description as movieDescription,
             movie.short_description as movieShortDescription,
@@ -97,14 +96,24 @@ export class ShowingService {
     try {
       const response = await this.dbService.query(`
         SELECT
-          showing_id as id,
-          movie_id as movieId,
-          hall_id as hallId,
-          date_start as dateStart,
-          date_end as dateEnd,
-          break
-        FROM
-          showings
+            showing_id as id,
+            movie.title as movieTitle,
+            movie.description as movieDescription,
+            movie.short_description as movieShortDescription,
+            movie.is_premiere as movieIsPremiere,
+            movie.age as movieAge,
+            movie.img as movieImg,
+            movie.rating as movieRating,
+            hall_id as hallId,
+            date_start as dateStart,
+            date_end as dateEnd,
+            break
+            FROM
+            showings
+        INNER JOIN
+            movies movie
+        ON
+            movie.movie_id = showings.movie_id
         ORDER BY ${sortBy}
       `);
 
