@@ -60,12 +60,23 @@ export class ShowingService {
         SELECT
             showing_id as id,
             movie_id as movieId,
+            movie.title as movieTitle,
+            movie.description as movieDescription,
+            movie.short_description as movieShortDescription,
+            movie.is_premiere as movieIsPremiere,
+            movie.age as movieAge,
+            movie.img as movieImg,
+            movie.rating as movieRating,   
             hall_id as hallId,
             date_start as dateStart,
             date_end as dateEnd,
             break
         FROM
             showings
+        INNER JOIN
+            movies movie
+        ON
+            movie.movie_id = showings.movie_id
         WHERE
             showing_id = ${id}
       `);
