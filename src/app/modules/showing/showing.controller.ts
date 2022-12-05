@@ -34,7 +34,6 @@ export class ShowingController {
     };
   }
 
-  @Public()
   @Get(':id')
   async getShowing(@Param('id') id: number) {
     const response = await this.showingService.getShowing(id);
@@ -48,7 +47,6 @@ export class ShowingController {
     };
   }
 
-  @Public()
   @Get()
   async getShowings() {
     const response = await this.showingService.getShowings();

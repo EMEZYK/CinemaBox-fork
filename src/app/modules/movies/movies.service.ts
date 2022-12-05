@@ -19,7 +19,6 @@ export class MoviesService {
                 age,
                 short_description as shortDescription,
                 img,
-                price,
                 rating
         FROM movies
         WHERE movie_id = ${id}
@@ -47,7 +46,6 @@ export class MoviesService {
               age,
               short_description as shortDescription,
               img,
-              price,
               rating
       FROM movies
       ORDER BY ${sortBy}
@@ -73,7 +71,6 @@ export class MoviesService {
         genre,
         age,
         img,
-        price,
         rating,
       } = moviePostData;
 
@@ -81,18 +78,14 @@ export class MoviesService {
         INSERT
         INTO 
             movies 
-                (title, description, short_description, is_premiere, duration, genre, age, img, price, rating)
+                (title, description, short_description, is_premiere, duration, genre, age, img, rating)
         VALUES
             ('${title}', '${description}', '${description.slice(
         0,
         100,
-      )}', ${isPremiere}, '${duration}', ARRAY['${genre}'], '${age}', '${img}', ${
-        price ? `${price}` : 22
-      }, ${rating})
+      )}', ${isPremiere}, '${duration}', ARRAY['${genre}'], '${age}', '${img}', ${rating})
         RETURNING movie_id as id
       `);
-
-      console.log(result[0]);
       return {
         data: result[0],
         isError: false,

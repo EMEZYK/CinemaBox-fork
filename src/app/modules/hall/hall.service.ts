@@ -68,7 +68,8 @@ export class HallService {
             hall_id as id,
             hall_no as hallNo,
             rows,
-            columns
+            columns,
+            capacity
         FROM
             halls
         ORDER BY
@@ -95,7 +96,8 @@ export class HallService {
             hall_id as id,
             hall_no as hallNo,
             rows,
-            columns
+            columns,
+            capacity
         FROM
             halls
         WHERE

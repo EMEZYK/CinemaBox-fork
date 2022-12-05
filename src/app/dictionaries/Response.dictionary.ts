@@ -37,6 +37,15 @@ const ResponseDictionary = {
   hallNotUpdated: 'Wystąpił błąd podczas aktualizacji sali',
   hallDeleted: 'Sala została pomyślnie usunięta',
   hallNotDeleted: 'Wystąpił błąd podczas usuwania sali',
+  // repertoire
+  repertoireError: 'Nie udało się pobrać listy repertuarów',
+  repertoireNotFound: 'Nie znaleziono repertuaru o podanym id',
+  repertoireCreated: 'Repertuar został pomyślnie dodany',
+  repertoireNotCreated: 'Wystąpił błąd podczas dodawania repertuaru',
+  repertoireUpdated: 'Repertuar został pomyślnie zaktualizowany',
+  repertoireNotUpdated: 'Wystąpił błąd podczas aktualizacji repertuaru',
+  repertoireDeleted: 'Repertuar został pomyślnie usunięty',
+  repertoireNotDeleted: 'Wystąpił błąd podczas usuwania repertuaru',
 } as const
 
 export default ResponseDictionary

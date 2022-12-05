@@ -20,7 +20,7 @@ export class ShowingService {
             movies
         WHERE
             movie_id = ${movie_id}
-    `);
+      `);
 
       if (!movieDuration[0].duration) {
         return {
@@ -31,15 +31,15 @@ export class ShowingService {
       const result = await this.dbService.query(`
         INSERT
         INTO
-          showings 
-              (movie_id, hall_id, date_start, date_end, duration, break)
+            showings 
+                (movie_id, hall_id, date_start, date_end, break)
         VALUES
-              (${movie_id}, ${hall_id}, '${dayjs(
+                (${movie_id}, ${hall_id}, '${dayjs(
         date_start,
       ).format()}', '${dayjs(date_start)
         .add(movieDuration[0].duration, 'minute')
-        .format()}', ${movieDuration[0].duration}, ${15})
-        RETURNING showings_id as id
+        .format()}', ${15})
+        RETURNING showing_id as id
       `);
 
       return {
@@ -58,17 +58,16 @@ export class ShowingService {
     try {
       const result = await this.dbService.query(`
         SELECT
-            showings_id as id,
+            showing_id as id,
             movie_id as movieId,
             hall_id as hallId,
             date_start as dateStart,
             date_end as dateEnd,
-            duration,
             break
         FROM
             showings
         WHERE
-            showings_id = ${id}
+            showing_id = ${id}
       `);
 
       return {
@@ -83,16 +82,15 @@ export class ShowingService {
     }
   }
 
-  async getShowings(sortBy = 'showings_id') {
+  async getShowings(sortBy = 'showing_id') {
     try {
       const response = await this.dbService.query(`
         SELECT
-          showings_id as id,
+          showing_id as id,
           movie_id as movieId,
           hall_id as hallId,
           date_start as dateStart,
           date_end as dateEnd,
-          duration,
           break
         FROM
           showings
@@ -114,7 +112,7 @@ export class ShowingService {
         FROM
             showings
         WHERE
-            showings_id = ${id}
+            showing_id = ${id}
       `);
 
       return {
@@ -149,7 +147,7 @@ export class ShowingService {
             },
             duration = ${duration ? `${duration}` : 'duration'}
         WHERE
-            showings_id = ${id}
+            showing_id = ${id}
       `);
 
       return {
