@@ -11,7 +11,6 @@ import { ShowingModule } from './modules/showing/showing.module';
 import { HallModule } from './modules/hall/hall.module';
 import { TicketsModule } from './modules/tickets/tickets.module';
 import { OrdersModule } from './modules/orders/orders.module';
-import { RepertoireModule } from './modules/repertoire/repertoire.module';
 
 @Module({
   imports: [
@@ -23,8 +22,7 @@ import { RepertoireModule } from './modules/repertoire/repertoire.module';
     ShowingModule,
     HallModule,
     TicketsModule,
-    OrdersModule,
-    RepertoireModule
+    OrdersModule
   ],
   controllers: [AppController],
   providers: [AppService],
