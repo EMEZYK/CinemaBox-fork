@@ -78,7 +78,17 @@ export class MoviesService {
         INSERT
         INTO 
             movies 
-                (title, description, short_description, is_premiere, duration, genre, age, img, rating)
+                (
+                  title,
+                  description,
+                  short_description,
+                  is_premiere,
+                  duration,
+                  genre,
+                  age,
+                  img,
+                  rating
+                )
         VALUES
             ('${title}', '${description}', '${description.slice(
         0,

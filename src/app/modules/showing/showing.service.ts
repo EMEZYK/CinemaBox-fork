@@ -1,57 +1,44 @@
-import { Injectable } from '@nestjs/common';
-import * as dayjs from 'dayjs';
+import { HttpException, Injectable } from '@nestjs/common';
+import dayjs from '../../utils/dayjs';
 
-import { CreateShowingDto } from './dto/create.showing.dto';
 import { DBService } from '../db/db.service';
 import { ShowingUpdateData } from './showing.types';
+import ShowingQueryRepository from './utlis/ShowingQueryRepository';
+import { MoviesService } from '../movies/movies.service';
 
 @Injectable()
 export class ShowingService {
-  constructor(private readonly dbService: DBService) {}
+  constructor(
+    private readonly showingQueryRepository: ShowingQueryRepository,
+    private readonly movieService: MoviesService,
+    private readonly dbService: DBService,
+    ) {}
 
-  async createShowing(createShowingDto: CreateShowingDto) {
-    try {
-      const { movie_id, hall_id, date_start } = createShowingDto;
+  async createShowing(data: any) {
+    const movie = await this.movieService.getMovie(data.movie_id);
 
-      const movieDuration = await this.dbService.query(`
-        SELECT
-            duration
-        FROM
-            movies
-        WHERE
-            movie_id = ${movie_id}
-      `);
-
-      if (!movieDuration[0].duration) {
-        return {
-          isError: true,
-        };
-      }
-
-      const result = await this.dbService.query(`
-        INSERT
-        INTO
-            showings 
-                (movie_id, hall_id, date_start, date_end, break)
-        VALUES
-                (${movie_id}, ${hall_id}, '${dayjs(
-        date_start,
-      ).format()}', '${dayjs(date_start)
-        .add(movieDuration[0].duration, 'minute')
-        .format()}', ${15})
-        RETURNING showing_id as id
-      `);
-
-      return {
-        isError: false,
-        data: result[0],
-      };
-    } catch (err) {
-      return {
-        data: err,
-        isError: true,
-      };
+    if (!movie || (Array.isArray(movie) && movie.length === 0)) {
+      throw new HttpException('Movie not found', 404);
     }
+
+    const duration = await this.dbService.query(`
+      SELECT duration
+      FROM movies
+      WHERE movie_id = ${data.movie_id}
+    `)
+
+    const convertedData = {
+      year: dayjs(data.date_start).year(),
+      month: dayjs(data.date_start).month(),
+      week: dayjs(data.date_start).week(),
+      day: dayjs(data.date_start).date(),
+      start: data.start,
+      end: dayjs(data.start).add(duration[0].duration, 'minute').format('YYYY-MM-DD HH:mm'),
+      hall_id: data.hall_id,
+      movie_id: data.movie_id
+    }
+
+    return this.showingQueryRepository.createShowing(convertedData)
   }
 
   async getShowing(id: number) {
@@ -62,13 +49,16 @@ export class ShowingService {
             movie.title as movieTitle,
             movie.description as movieDescription,
             movie.short_description as movieShortDescription,
+            movie.genre as movieGenre,
             movie.is_premiere as movieIsPremiere,
             movie.age as movieAge,
             movie.img as movieImg,
-            movie.rating as movieRating,   
+            movie.rating as movieRating,
+            movie.duration as movieDuration,
             hall_id as hallId,
             date_start as dateStart,
             date_end as dateEnd,
+
             break
         FROM
             showings
@@ -92,36 +82,40 @@ export class ShowingService {
     }
   }
 
-  async getShowings(sortBy = 'showing_id') {
-    try {
-      const response = await this.dbService.query(`
-        SELECT
-            showing_id as id,
-            movie.title as movieTitle,
-            movie.description as movieDescription,
-            movie.short_description as movieShortDescription,
-            movie.is_premiere as movieIsPremiere,
-            movie.age as movieAge,
-            movie.img as movieImg,
-            movie.rating as movieRating,
-            hall_id as hallId,
-            date_start as dateStart,
-            date_end as dateEnd,
-            break
-            FROM
-            showings
-        INNER JOIN
-            movies movie
-        ON
-            movie.movie_id = showings.movie_id
-        ORDER BY ${sortBy}
-      `);
+  async getShowings(
+    date: Date | string,
+    filters: string[],
+    hallId?: number
+    ) {
+    const showings = await this.showingQueryRepository.getShowingsByFilter(
+      date,
+      filters,
+      hallId,
+    )
 
-      if (Array.isArray(response) && response.length > 0) {
-        return response;
+    if (!Array.isArray(showings)) {
+      throw new HttpException({
+        message: 'Wystąpił błąd podczas pobierania seansów',
+        data: showings
+      }, 404)
+    }
+
+    let showingsCount = 0
+
+    const mapped = showings.map(({ id, movieid, hallid, start, end }) => { 
+      showingsCount++
+
+      return {
+        id,
+        movieid,
+        hallid,
+        start,
+        end
       }
-    } catch (err) {
-      return null;
+    })
+    return {
+      showings: mapped,
+      count: showingsCount
     }
   }
 

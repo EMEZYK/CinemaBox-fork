@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   HttpException,
+  Query,
 } from '@nestjs/common';
 
 import { ShowingService } from './showing.service';
@@ -14,24 +15,19 @@ import { CreateShowingDto } from './dto/create.showing.dto';
 import ResponseDictionary from 'src/app/dictionaries/Response.dictionary';
 import { Public } from 'src/app/declarations/isPublic';
 import { UpdateShowingDto } from './dto/update.showing.dto';
+import ShowingValidator from './utlis/showing.validator';
 
 @Controller('showings')
 export class ShowingController {
   constructor(private readonly showingService: ShowingService) {}
 
   @Post()
-  async createShowing(@Body() createShowingDto: CreateShowingDto) {
-    const { isError } = await this.showingService.createShowing(
-      createShowingDto,
-    );
-
-    if (isError) {
-      throw new HttpException(ResponseDictionary.showingNotCreated, 400);
-    }
-
-    return {
-      message: ResponseDictionary.showingCreated,
-    };
+  async createShowing(@Body() body) {
+    return await this.showingService.createShowing({
+      start: ShowingValidator.date(body.start),
+      movie_id: body.movie_id,
+      hall_id: ShowingValidator.hallId(body.hall_id),
+    });
   }
 
   @Get(':id')
@@ -48,17 +44,16 @@ export class ShowingController {
   }
 
   @Get()
-  async getShowings() {
-    const response = await this.showingService.getShowings();
+  async getShowings(@Query() query) {
+    const {
+      date, filters, hall_id: hallId
+    } = query
 
-    if (!response) {
-      throw new HttpException(ResponseDictionary.moviesError, 404);
-    }
-
-    return {
-      showings: response,
-      count: response.length,
-    };
+    return await this.showingService.getShowings(
+      ShowingValidator.date(date),
+      ShowingValidator.filters(filters),
+      ShowingValidator.hallId(hallId),
+    )
   }
 
   @Delete(':id')
