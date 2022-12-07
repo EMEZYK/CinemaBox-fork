@@ -35,6 +35,7 @@ class ShowingQueryRepository {
           "end",
           movie_id as movieId,
           hall_id as hallId,
+          middle_hours as middleHours,
           break
       FROM
           showings
