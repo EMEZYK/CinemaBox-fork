@@ -82,7 +82,9 @@ export class ShowingController {
 
     setTimeout(() => {
       this.showingService.removeFromBookedSeats(id, body.seats);
-    }, 900000);
+    }, 10000);
+
+    // 15 min = 900000
 
     if (!response) {
       throw new HttpException(ResponseDictionary.movieNotUpdated, 400);
