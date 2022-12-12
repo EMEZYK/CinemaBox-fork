@@ -137,6 +137,21 @@ export class ShowingService {
   }
 
   async addToBookedSeats(id: number, seats: string[]) {
+    // if seat already booked throw error
+    const bookedSeats = await this.dbService.query(`
+      SELECT booked_seats
+      FROM showings
+      WHERE showing_id = ${id}
+    `)
+
+    console.log(bookedSeats)
+
+    seats.forEach(seat => {
+      if (bookedSeats[0].booked_seats.includes(seat)) {
+        throw new HttpException('Miejsce jest już zarezerwowane', 400)
+      }
+    })
+
     try {
       const result = await this.dbService.query(`
         UPDATE
