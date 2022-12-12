@@ -11,9 +11,7 @@ import {
 } from '@nestjs/common';
 
 import { ShowingService } from './showing.service';
-import { CreateShowingDto } from './dto/create.showing.dto';
 import ResponseDictionary from 'src/app/dictionaries/Response.dictionary';
-import { Public } from 'src/app/declarations/isPublic';
 import { UpdateShowingDto } from './dto/update.showing.dto';
 import ShowingValidator from './utlis/showing.validator';
 
@@ -28,19 +26,6 @@ export class ShowingController {
       movie_id: body.movie_id,
       hall_id: ShowingValidator.hallId(body.hall_id),
     });
-  }
-
-  @Get(':id')
-  async getShowing(@Param('id') id: number) {
-    const response = await this.showingService.getShowing(id);
-
-    if (!response) {
-      throw new HttpException(ResponseDictionary.movieNotFound, 404);
-    }
-
-    return {
-      showing: response.data,
-    };
   }
 
   @Get()
@@ -78,6 +63,26 @@ export class ShowingController {
       id,
       updateShowingDto,
     );
+
+    if (!response) {
+      throw new HttpException(ResponseDictionary.movieNotUpdated, 400);
+    }
+
+    return {
+      message: ResponseDictionary.movieUpdated,
+    };
+  }
+
+  @Patch(':id/booked')
+  async addToBookedSeats(@Param('id') id: number, @Body() body) {
+    const response = await this.showingService.addToBookedSeats(
+      id,
+      body.seats,
+    );
+
+    setTimeout(() => {
+      this.showingService.removeFromBookedSeats(id, body.seats);
+    }, 900000);
 
     if (!response) {
       throw new HttpException(ResponseDictionary.movieNotUpdated, 400);

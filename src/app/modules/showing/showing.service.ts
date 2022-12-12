@@ -41,47 +41,6 @@ export class ShowingService {
     return this.showingQueryRepository.createShowing(convertedData)
   }
 
-  async getShowing(id: number) {
-    try {
-      const result = await this.dbService.query(`
-        SELECT
-            showing_id as id,
-            movie.title as movieTitle,
-            movie.description as movieDescription,
-            movie.short_description as movieShortDescription,
-            movie.genre as movieGenre,
-            movie.is_premiere as movieIsPremiere,
-            movie.age as movieAge,
-            movie.img as movieImg,
-            movie.rating as movieRating,
-            movie.duration as movieDuration,
-            hall_id as hallId,
-            date_start as dateStart,
-            date_end as dateEnd,
-
-            break
-        FROM
-            showings
-        INNER JOIN
-            movies movie
-        ON
-            movie.movie_id = showings.movie_id
-        WHERE
-            showing_id = ${id}
-      `);
-
-      return {
-        isError: false,
-        data: result[0],
-      };
-    } catch (err) {
-      return {
-        isError: true,
-        data: err,
-      };
-    }
-  }
-
   async getShowings(
     date: Date | string,
     filters: string[],
@@ -170,6 +129,56 @@ export class ShowingService {
         data: result,
       };
     } catch (err) {
+      return {
+        isError: true,
+        data: err,
+      };
+    }
+  }
+
+  async addToBookedSeats(id: number, seats: string[]) {
+    try {
+      const result = await this.dbService.query(`
+        UPDATE
+            showings
+        SET
+            booked_seats = booked_seats || '{${seats}}'
+        WHERE
+            showing_id = ${id}
+      `);
+
+      return {
+        isError: false,
+        data: result,
+      };
+
+    } catch (err) {
+      return {
+        isError: true,
+        data: err,
+      };
+    }
+  }
+
+  async removeFromBookedSeats(id: number, seats: string[]) {
+    try {
+      seats.forEach(async (seat, index) => {
+        const result = await this.dbService.query(`
+        UPDATE
+            showings
+        SET
+            booked_seats = array_remove(booked_seats, '${seats[index]}')
+        WHERE
+            showing_id = ${id}
+        `);
+
+        return {
+          isError: false,
+          data: result,
+        };
+      })
+    } catch (err) {
+      console.log(err)
       return {
         isError: true,
         data: err,
