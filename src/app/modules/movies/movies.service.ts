@@ -37,7 +37,7 @@ export class MoviesService {
   async getMovies(sortBy = 'movie_id') {
     try {
       const result = await this.dbService.query(`
-      SELECT movie_id as id,
+      SELECT  movie_id as id,
               title,
               description,
               is_premiere as isPremiere,

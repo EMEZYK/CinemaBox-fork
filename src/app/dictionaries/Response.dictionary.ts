@@ -46,6 +46,15 @@ const ResponseDictionary = {
   repertoireNotUpdated: 'Wystąpił błąd podczas aktualizacji repertuaru',
   repertoireDeleted: 'Repertuar został pomyślnie usunięty',
   repertoireNotDeleted: 'Wystąpił błąd podczas usuwania repertuaru',
+  // tickets
+  ticketsError: 'Nie udało się pobrać listy biletów',
+  ticketNotFound: 'Nie znaleziono biletu o podanym id',
+  ticketCreated: 'Bilet został pomyślnie dodany',
+  ticketNotCreated: 'Wystąpił błąd podczas dodawania biletu',
+  ticketUpdated: 'Bilet został pomyślnie zaktualizowany',
+  ticketNotUpdated: 'Wyśpił błąd podczas aktualizacji biletu',
+  ticketDeleted: 'Bilet został pomyślnie usunięty',
+  ticketNotDeleted: 'Wyśpił błąd podczas usuwania biletu',
 } as const
 
 export default ResponseDictionary

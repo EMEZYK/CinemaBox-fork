@@ -1,15 +1,39 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Injectable } from '@nestjs/common';
+import ResponseDictionary from 'src/app/dictionaries/Response.dictionary';
+import { DBService } from '../db/db.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
 
 @Injectable()
 export class TicketsService {
+  constructor(
+    private readonly dbService: DBService,
+  ) {}
   create(createTicketDto: CreateTicketDto) {
     return 'This action adds a new ticket';
   }
 
-  findAll() {
-    return `This action returns all tickets`;
+  async getTickets() {
+    try {
+      const result = await this.dbService.query(`
+        SELECT
+            *
+        FROM
+            ticket_types
+        ORDER BY
+            price
+        DESC
+      `)
+
+      if (Array.isArray(result) && result.length > 0) {
+        return result
+      }
+
+      return null
+    } catch (err) {
+      console.log(err)
+      return null
+    }
   }
 
   findOne(id: number) {

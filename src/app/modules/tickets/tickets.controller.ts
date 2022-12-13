@@ -1,7 +1,9 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException } from '@nestjs/common';
 import { TicketsService } from './tickets.service';
 import { CreateTicketDto } from './dto/create-ticket.dto';
 import { UpdateTicketDto } from './dto/update-ticket.dto';
+import ResponseDictionary from 'src/app/dictionaries/Response.dictionary';
+import { Public } from 'src/app/declarations/isPublic';
 
 @Controller('tickets')
 export class TicketsController {
@@ -12,9 +14,19 @@ export class TicketsController {
     return this.ticketsService.create(createTicketDto);
   }
 
+  @Public()
   @Get()
-  findAll() {
-    return this.ticketsService.findAll();
+  async getTickets() {
+    const response = await this.ticketsService.getTickets();
+    console.log(response)
+
+    if (!response) {
+      throw new HttpException(ResponseDictionary.ticketsError, 400);
+    }
+
+    return {
+      tickets: response
+    }
   }
 
   @Get(':id')
