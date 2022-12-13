@@ -94,4 +94,20 @@ export class ShowingController {
       message: ResponseDictionary.movieUpdated,
     };
   }
+
+  @Patch(':id/remove')
+  async removeFromBookedSeats(@Param('id') id: number, @Body() body) {
+    const response = await this.showingService.removeFromBookedSeats(
+      id,
+      body.seats,
+    );
+
+    if (!response) {
+      throw new HttpException(ResponseDictionary.movieNotUpdated, 400);
+    }
+
+    return {
+      message: ResponseDictionary.movieUpdated,
+    };
+  }
 }
