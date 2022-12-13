@@ -193,7 +193,6 @@ export class ShowingService {
         };
       })
     } catch (err) {
-      console.log(err)
       return {
         isError: true,
         data: err,

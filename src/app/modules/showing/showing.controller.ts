@@ -14,6 +14,7 @@ import { ShowingService } from './showing.service';
 import ResponseDictionary from 'src/app/dictionaries/Response.dictionary';
 import { UpdateShowingDto } from './dto/update.showing.dto';
 import ShowingValidator from './utlis/showing.validator';
+import { Public } from 'src/app/declarations/isPublic';
 
 @Controller('showings')
 export class ShowingController {
@@ -73,6 +74,7 @@ export class ShowingController {
     };
   }
 
+  @Public()
   @Patch(':id/booked')
   async addToBookedSeats(@Param('id') id: number, @Body() body) {
     const response = await this.showingService.addToBookedSeats(
@@ -95,16 +97,13 @@ export class ShowingController {
     };
   }
 
+  @Public()
   @Patch(':id/remove')
   async removeFromBookedSeats(@Param('id') id: number, @Body() body) {
     const response = await this.showingService.removeFromBookedSeats(
       id,
       body.seats,
     );
-
-    if (!response) {
-      throw new HttpException(ResponseDictionary.movieNotUpdated, 400);
-    }
 
     return {
       message: ResponseDictionary.movieUpdated,
