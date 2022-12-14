@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+import { Public } from 'src/app/declarations/isPublic';
 
 import ResponseDictionary from 'src/app/dictionaries/Response.dictionary';
 import { CreateMovieDto } from './dto/movie.create.dto';
@@ -18,6 +19,7 @@ import { MoviesService } from './movies.service';
 export class MoviesController {
   constructor(private readonly movieService: MoviesService) {}
 
+  @Public()
   @Get(':id')
   async getMovie(@Param('id') id: number) {
     const response = await this.movieService.getMovie(id);
