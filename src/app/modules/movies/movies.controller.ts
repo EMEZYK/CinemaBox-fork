@@ -33,6 +33,7 @@ export class MoviesController {
     };
   }
 
+  @Public()
   @Get()
   async getMovies() {
     const response = await this.movieService.getMovies();
