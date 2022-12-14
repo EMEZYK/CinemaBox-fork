@@ -175,6 +175,31 @@ export class ShowingService {
     }
   }
 
+  async addToPaidSeats(id: number, seats: string[]) {
+    try {
+      seats.forEach(async (seat, index) => {
+        const result = await this.dbService.query(`
+        UPDATE
+            showings
+        SET
+            paid_seats = paid_seats || '{${seats[index]}}'
+        WHERE
+            showing_id = ${id}
+        `);
+
+        return {
+          isError: false,
+          data: result,
+        };
+      })
+    } catch (err) {
+      return {
+        isError: true,
+        data: err,
+      };
+    }
+  }
+
   async removeFromBookedSeats(id: number, seats: string[]) {
     try {
       seats.forEach(async (seat, index) => {

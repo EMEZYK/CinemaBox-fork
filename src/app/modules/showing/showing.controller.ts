@@ -29,6 +29,7 @@ export class ShowingController {
     });
   }
 
+  @Public()
   @Get()
   async getShowings(@Query() query) {
     const {
@@ -87,6 +88,23 @@ export class ShowingController {
     }, 10000);
 
     // 15 min = 900000
+
+    if (!response) {
+      throw new HttpException(ResponseDictionary.movieNotUpdated, 400);
+    }
+
+    return {
+      message: ResponseDictionary.movieUpdated,
+    };
+  }
+
+  @Public()
+  @Patch(':id/paid')
+  async addToPaidSeats(@Param('id') id: number, @Body() body) {
+    const response = await this.showingService.addToPaidSeats(
+      id,
+      body.seats,
+    );
 
     if (!response) {
       throw new HttpException(ResponseDictionary.movieNotUpdated, 400);

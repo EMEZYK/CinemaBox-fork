@@ -13,6 +13,7 @@ import { HallService } from './hall.service';
 import { CreateHallDto } from './dto/create.hall.dto';
 import { UpdateHallDto } from './dto/update.hall.dto';
 import ResponseDictionary from 'src/app/dictionaries/Response.dictionary';
+import { Public } from 'src/app/declarations/isPublic';
 
 @Controller('halls')
 export class HallController {
@@ -44,6 +45,7 @@ export class HallController {
     };
   }
 
+  @Public()
   @Get(':id')
   async getHall(@Param('id') id: number) {
     const response = await this.hallService.getHall(id);
