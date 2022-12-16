@@ -96,15 +96,11 @@ export class ShowingService {
 
       if (Array.isArray(result) && result.length > 0) {
         return {
-          isError: false,
           data: result[0],
         };
       }
     } catch (err) {
-      return {
-        isError: true,
-        data: err,
-      };
+      return null
     }
   }
 
