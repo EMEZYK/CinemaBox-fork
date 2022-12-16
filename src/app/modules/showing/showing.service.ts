@@ -81,6 +81,29 @@ export class ShowingService {
     }
   }
 
+  async getShowing(id: number) {
+    try {
+      const showing = await this.dbService.query(`
+      SELECT
+          showings.showing_id AS id,
+          booked_seats as bookedseats,
+          paid_seats as paidseats
+      WHERE
+          showings.showing_id = ${id}
+    `)
+
+      return {
+        isError: false,
+        data: showing,
+      };
+    } catch (err) {
+      return {
+        isError: true,
+        data: err,
+      };
+    }
+  }
+
   async deleteShowing(id: number) {
     try {
       const result = await this.dbService.query(`
