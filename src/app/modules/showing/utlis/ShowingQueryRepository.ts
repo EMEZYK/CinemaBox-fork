@@ -33,11 +33,11 @@ class ShowingQueryRepository {
           "day",
           "start",
           "end",
-          booked_seats as bookedSeats,
-          paid_seats as paidSeats,
           movie_id as movieId,
           hall_id as hallId,
           middle_hours as middleHours,
+          booked_seats as bookedSeats,
+          paid_seats as paidSeats,
           break
       FROM
           showings
@@ -50,10 +50,9 @@ class ShowingQueryRepository {
 
     try {
       const result = await this.dbService.query(query);
-      console.log(result)
+      
       return result;
     } catch (err) {
-      console.log(err);
       throw new HttpException('Wystąpił błąd podczas pobierania seansów', 500);
     }
   };
