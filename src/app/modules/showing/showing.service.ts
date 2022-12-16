@@ -85,11 +85,13 @@ export class ShowingService {
     try {
       const result = await this.dbService.query(`
       SELECT
-          showings.showing_id AS id,
+          showing_id AS id,
           booked_seats as bookedseats,
           paid_seats as paidseats
+      FROM
+          showings
       WHERE
-          showings.showing_id = ${id}
+          showing_id = ${id}
       `)
 
       if (Array.isArray(result) && result.length > 0) {
