@@ -33,6 +33,8 @@ class ShowingQueryRepository {
           "day",
           "start",
           "end",
+          booked_seats as bookedSeats,
+          paid_seats as paidSeats,
           movie_id as movieId,
           hall_id as hallId,
           middle_hours as middleHours,
