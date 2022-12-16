@@ -83,19 +83,21 @@ export class ShowingService {
 
   async getShowing(id: number) {
     try {
-      const showing = await this.dbService.query(`
+      const result = await this.dbService.query(`
       SELECT
           showings.showing_id AS id,
           booked_seats as bookedseats,
           paid_seats as paidseats
       WHERE
           showings.showing_id = ${id}
-    `)
+      `)
 
-      return {
-        isError: false,
-        data: showing,
-      };
+      if (Array.isArray(result) && result.length > 0) {
+        return {
+          isError: false,
+          data: result[0],
+        };
+      }
     } catch (err) {
       return {
         isError: true,
