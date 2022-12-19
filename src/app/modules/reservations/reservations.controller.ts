@@ -14,7 +14,12 @@ export class ReservationsController {
       body.showing_id,
       body.seats,
       body.user_id,
-      body.ticket_no
+      body.ticket_no,
+      body.blik_code,
+      body.first_name,
+      body.last_name,
+      body.phone_number,
+      body.email
     );
 
     if (isError) {

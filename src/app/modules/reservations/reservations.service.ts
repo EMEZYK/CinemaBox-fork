@@ -11,7 +11,12 @@ export class ReservationsService {
     showing_id: number,
     seats: string[],
     user_id: number,
-    ticket_no: number
+    ticket_no: number,
+    blik_code: string,
+    first_name: string,
+    last_name: string,
+    phone_number: string,
+    email: string
   ) {
     try {
       // add blik code
@@ -23,14 +28,24 @@ export class ReservationsService {
                     showing_id,
                     seats,
                     user_id,
-                    ticket_no
+                    ticket_no,
+                    blik_code,
+                    first_name,
+                    last_name,
+                    phone_number,
+                    email
                   )
           VALUES
               (
                 ${showing_id},
                 '{${seats}}',
                 ${user_id},
-                ${ticket_no}
+                ${ticket_no},
+                '${blik_code}',
+                '${first_name}',
+                '${last_name}',
+                '${phone_number}',
+                '${email}'
               )
           RETURNING
               ticket_no as ticketNo
