@@ -55,6 +55,15 @@ const ResponseDictionary = {
   ticketNotUpdated: 'Wyśpił błąd podczas aktualizacji biletu',
   ticketDeleted: 'Bilet został pomyślnie usunięty',
   ticketNotDeleted: 'Wyśpił błąd podczas usuwania biletu',
+  // reservations
+  reservationsError: 'Nie udało się pobrać listy rezerwacji',
+  reservationNotFound: 'Nie znaleziono rezerwacji o podanym id',
+  reservationCreated: 'Rezerwacja została pomyślnie dodana',
+  reservationNotCreated: 'Wystąpił błąd podczas dodawania rezerwacji',
+  reservationUpdated: 'Rezerwacja została pomyślnie zaktualizowana',
+  reservationNotUpdated: 'Wystąpił błąd podczas aktualizacji rezerwacji',
+  reservationDeleted: 'Rezerwacja została pomyślnie usunięta',
+  reservationNotDeleted: 'Wystąpił błąd podczas usuwania rezerwacji',
 } as const
 
 export default ResponseDictionary
