@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpException,
+} from '@nestjs/common';
 import { Public } from 'src/app/declarations/isPublic';
 import ResponseDictionary from 'src/app/dictionaries/Response.dictionary';
 import { ReservationsService } from './reservations.service';
@@ -19,16 +28,18 @@ export class ReservationsController {
       body.first_name,
       body.last_name,
       body.phone_number,
-      body.email
+      body.email,
     );
+
+    console.log(isError, data)
 
     if (isError) {
       throw new HttpException(ResponseDictionary.reservationsError, 400);
     }
 
     return {
-      message: data
-    }
+      message: data,
+    };
   }
 
   @Get()
@@ -41,8 +52,8 @@ export class ReservationsController {
 
     return {
       reservations: response,
-      count: response.length
-    }
+      count: response.length,
+    };
   }
 
   @Get(':id')
@@ -55,8 +66,8 @@ export class ReservationsController {
 
     return {
       reservations: response,
-      count: response.length
-    }
+      count: response.length,
+    };
   }
 
   @Public()
@@ -69,8 +80,8 @@ export class ReservationsController {
     }
 
     return {
-      reservation: response
-    }
+      reservation: response,
+    };
   }
 
   @Public()
@@ -83,7 +94,7 @@ export class ReservationsController {
     }
 
     return {
-      message: response
-    }
+      message: response,
+    };
   }
 }
