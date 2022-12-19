@@ -15,7 +15,7 @@ export class ReservationsService {
     last_name: string,
     phone_number: string,
     email: string,
-    total_price: number
+    total_price: number,
   ) {
     try {
       const result = await this.dbService.query(`
@@ -85,6 +85,7 @@ export class ReservationsService {
               reservations.blik_code,
               reservations.user_id,
               reservations.showing_id,
+              reservations.total_price,
               showings.start,
               showings.hall_id,
               movies.title
