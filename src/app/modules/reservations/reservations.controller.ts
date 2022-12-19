@@ -29,9 +29,8 @@ export class ReservationsController {
       body.last_name,
       body.phone_number,
       body.email,
+      body.total_price,
     );
-
-    console.log(isError, data)
 
     if (isError) {
       throw new HttpException(ResponseDictionary.reservationsError, 400);

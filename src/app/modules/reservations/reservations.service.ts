@@ -15,6 +15,7 @@ export class ReservationsService {
     last_name: string,
     phone_number: string,
     email: string,
+    total_price: number
   ) {
     try {
       const result = await this.dbService.query(`
@@ -30,7 +31,8 @@ export class ReservationsService {
                     first_name,
                     last_name,
                     phone_number,
-                    email
+                    email,
+                    total_price
                   )
           VALUES
               (
@@ -42,7 +44,8 @@ export class ReservationsService {
                 '${first_name}',
                 '${last_name}',
                 '${phone_number}',
-                '${email}'
+                '${email}',
+                '${total_price}'
               )
           RETURNING
               ticket_no as ticketNo
