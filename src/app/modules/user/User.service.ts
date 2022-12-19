@@ -68,6 +68,10 @@ export class UserService {
       SELECT 
           email,
           user_id as id,
+          first_name as firstName,
+          last_name as lastName,
+          phone_number as phone,
+          is_active as isActive,
           "password"
       FROM 
           users
