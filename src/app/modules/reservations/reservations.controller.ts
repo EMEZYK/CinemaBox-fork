@@ -27,17 +27,58 @@ export class ReservationsController {
   }
 
   @Get()
-  findAll() {
-    return this.reservationsService.findAll();
+  async getAllReservations() {
+    const response = await this.reservationsService.getAllReservations();
+
+    if (!response) {
+      throw new HttpException(ResponseDictionary.reservationsError, 400);
+    }
+
+    return {
+      reservations: response,
+      count: response.length
+    }
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.reservationsService.findOne(+id);
+  async getMyReservations(@Param('id') id: number) {
+    const response = await this.reservationsService.getMyReservations(id);
+
+    if (!response) {
+      throw new HttpException(ResponseDictionary.reservationsError, 400);
+    }
+
+    return {
+      reservations: response,
+      count: response.length
+    }
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.reservationsService.remove(+id);
+  @Public()
+  @Get('ticket/:id')
+  async getReservationByTicket(@Param('id') id: number) {
+    const response = await this.reservationsService.getReservationByTicket(id);
+
+    if (!response) {
+      throw new HttpException(ResponseDictionary.reservationsError, 400);
+    }
+
+    return {
+      reservation: response
+    }
+  }
+
+  @Public()
+  @Patch(':id')
+  async refundReservation(@Param('id') id: number) {
+    const response = await this.reservationsService.refundReservation(id);
+
+    if (!response) {
+      throw new HttpException(ResponseDictionary.reservationsError, 400);
+    }
+
+    return {
+      message: response
+    }
   }
 }

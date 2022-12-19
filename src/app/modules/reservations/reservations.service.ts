@@ -14,6 +14,7 @@ export class ReservationsService {
     ticket_no: number
   ) {
     try {
+      // add blik code
       const result = await this.dbService.query(`
           INSERT
           INTO
@@ -56,15 +57,135 @@ export class ReservationsService {
     }
   }
 
-  findAll() {
-    return `This action returns all reservations`;
+  async getAllReservations() {
+    try {
+      const result = await this.dbService.query(`
+          SELECT
+              *
+          FROM
+              reservations
+          ORDER BY
+              reservation_id
+      `)
+      if (Array.isArray(result) && result.length > 0) {
+        return result
+      }
+
+      return null
+    } catch (err) {
+      return null;
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} reservation`;
+  async getMyReservations(id: number) {
+    try {
+      const result = await this.dbService.query(`
+          SELECT
+              *
+          FROM
+              reservations
+          WHERE
+              user_id = ${id}
+          ORDER BY
+              reservation_id
+      `)
+      if (Array.isArray(result) && result.length > 0) {
+        return result[0]
+      }
+
+      return null
+    } catch (err) {
+      return null
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} reservation`;
+  async getReservationByTicket(ticketNo: number) {
+    try {
+      const result = await this.dbService.query(`
+          SELECT
+              *
+          FROM
+              reservations
+          WHERE
+              ticket_no = ${ticketNo}
+          ORDER BY
+              reservation_id
+      `)
+      if (Array.isArray(result) && result.length > 0) {
+        return result[0]
+      }
+
+      return null
+    } catch (err) {
+      return null
+    }
+  }
+
+  // refund reservation by ticket number only if it's showing starts not earlier than 24h from now
+  async refundReservation(ticketNo: number) {
+    try {
+      const result = await this.dbService.query(`
+          SELECT
+              *
+          FROM
+              reservations
+          WHERE
+              ticket_no = ${ticketNo}
+          ORDER BY
+              reservation_id
+      `)
+      if (Array.isArray(result) && result.length > 0) {
+        const reservation = result[0]
+        const showing = await this.dbService.query(`
+            SELECT
+                *
+            FROM
+                showings
+            WHERE
+                showing_id = ${reservation.showing_id}
+            ORDER BY
+                showing_id
+        `)
+        if (Array.isArray(showing) && showing.length > 0) {
+          const showingDate = new Date(showing[0].date)
+          const now = new Date()
+          if (showingDate.getTime() - now.getTime() > 86400000) {
+            await this.dbService.query(`
+                DELETE
+                FROM
+                    reservations
+                WHERE
+                    ticket_no = ${ticketNo}
+            `)
+
+            await this.dbService.query(`
+                UPDATE
+                    showings
+                SET
+                    paid_seats = paid_seats - '{${reservation.seats}}'
+                WHERE
+                    showing_id = ${reservation.showing_id}
+            `)
+            return {
+              data: {
+                message: 'Zwrot rezerwacji przebiegł pomyślnie'
+              },
+              isError: false
+            }
+          } else {
+            return {
+              data: {
+                message: 'Nie można zwrócić rezerwacji, ponieważ seans rozpocznie się za mniej niż 24h'
+              },
+              isError: true
+            }
+          }
+        }
+      }
+
+      return null
+    } catch (err) {
+      return null
+    }
   }
 }
