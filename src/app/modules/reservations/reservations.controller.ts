@@ -42,6 +42,7 @@ export class ReservationsController {
     };
   }
 
+  @Public()
   @Get()
   async getAllReservations() {
     const response = await this.reservationsService.getAllReservations();

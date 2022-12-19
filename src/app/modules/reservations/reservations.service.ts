@@ -3,9 +3,7 @@ import { DBService } from '../db/db.service';
 
 @Injectable()
 export class ReservationsService {
-  constructor(
-    private readonly dbService: DBService
-  ) {}
+  constructor(private readonly dbService: DBService) {}
 
   async createReservation(
     showing_id: number,
@@ -16,10 +14,9 @@ export class ReservationsService {
     first_name: string,
     last_name: string,
     phone_number: string,
-    email: string
+    email: string,
   ) {
     try {
-      // add blik code
       const result = await this.dbService.query(`
           INSERT
           INTO
@@ -49,7 +46,7 @@ export class ReservationsService {
               )
           RETURNING
               ticket_no as ticketNo
-      `)
+      `);
 
       await this.dbService.query(`
           UPDATE
@@ -58,17 +55,17 @@ export class ReservationsService {
               paid_seats = paid_seats || '{${seats}}'
           WHERE
               showing_id = ${showing_id}
-      `)
+      `);
 
       return {
         data: result[0],
-        isError: false
-      }
+        isError: false,
+      };
     } catch (err) {
       return {
         data: err,
-        isError: true
-      }
+        isError: true,
+      };
     }
   }
 
@@ -76,18 +73,32 @@ export class ReservationsService {
     try {
       const result = await this.dbService.query(`
           SELECT
-              *
+              reservations.seats,
+              reservations.ticket_no,
+              reservations.first_name,
+              reservations.last_name,
+              reservations.email,
+              reservations.phone_number,
+              reservations.blik_code,
+              reservations.user_id,
+              reservations.showing_id,
+              showings.start,
+              showings.hall_id,
+              movies.title
           FROM
               reservations
+                  INNER JOIN showings ON showings.showing_id = reservations.showing_id
+                  INNER JOIN movies ON movies.movie_id = showings.movie_id
           ORDER BY
-              reservation_id
-      `)
+              reservations.reservation_id
+      `);
       if (Array.isArray(result) && result.length > 0) {
-        return result
+        return result;
       }
 
-      return null
+      return null;
     } catch (err) {
+      console.log(err);
       return null;
     }
   }
@@ -103,14 +114,14 @@ export class ReservationsService {
               user_id = ${id}
           ORDER BY
               reservation_id
-      `)
+      `);
       if (Array.isArray(result) && result.length > 0) {
-        return result[0]
+        return result[0];
       }
 
-      return null
+      return null;
     } catch (err) {
-      return null
+      return null;
     }
   }
 
@@ -125,14 +136,14 @@ export class ReservationsService {
               ticket_no = ${ticketNo}
           ORDER BY
               reservation_id
-      `)
+      `);
       if (Array.isArray(result) && result.length > 0) {
-        return result[0]
+        return result[0];
       }
 
-      return null
+      return null;
     } catch (err) {
-      return null
+      return null;
     }
   }
 
@@ -148,9 +159,9 @@ export class ReservationsService {
               ticket_no = ${ticketNo}
           ORDER BY
               reservation_id
-      `)
+      `);
       if (Array.isArray(result) && result.length > 0) {
-        const reservation = result[0]
+        const reservation = result[0];
         const showing = await this.dbService.query(`
             SELECT
                 *
@@ -160,10 +171,10 @@ export class ReservationsService {
                 showing_id = ${reservation.showing_id}
             ORDER BY
                 showing_id
-        `)
+        `);
         if (Array.isArray(showing) && showing.length > 0) {
-          const showingDate = new Date(showing[0].date)
-          const now = new Date()
+          const showingDate = new Date(showing[0].date);
+          const now = new Date();
           if (showingDate.getTime() - now.getTime() > 86400000) {
             await this.dbService.query(`
                 DELETE
@@ -171,7 +182,7 @@ export class ReservationsService {
                     reservations
                 WHERE
                     ticket_no = ${ticketNo}
-            `)
+            `);
 
             await this.dbService.query(`
                 UPDATE
@@ -180,27 +191,28 @@ export class ReservationsService {
                     paid_seats = paid_seats - '{${reservation.seats}}'
                 WHERE
                     showing_id = ${reservation.showing_id}
-            `)
+            `);
             return {
               data: {
-                message: 'Zwrot rezerwacji przebiegł pomyślnie'
+                message: 'Zwrot rezerwacji przebiegł pomyślnie',
               },
-              isError: false
-            }
+              isError: false,
+            };
           } else {
             return {
               data: {
-                message: 'Nie można zwrócić rezerwacji, ponieważ seans rozpocznie się za mniej niż 24h'
+                message:
+                  'Nie można zwrócić rezerwacji, ponieważ seans rozpocznie się za mniej niż 24h',
               },
-              isError: true
-            }
+              isError: true,
+            };
           }
         }
       }
 
-      return null
+      return null;
     } catch (err) {
-      return null
+      return null;
     }
   }
 }
