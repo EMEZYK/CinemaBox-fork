@@ -33,7 +33,7 @@ export class ShowingService {
       week: dayjs(data.date_start).week(),
       day: dayjs(data.date_start).date(),
       start: data.start,
-      end: dayjs(data.start).add(duration[0].duration + 15, 'minute').format('YYYY-MM-DD HH:mm'),
+      end: dayjs(data.start).add(duration[0].duration, 'minute').format('YYYY-MM-DD HH:mm'),
       hall_id: data.hall_id,
       movie_id: data.movie_id
     }
