@@ -36,8 +36,8 @@ export class ShowingService {
     for (let currentTime = startTime; currentTime.isBefore(endTime); currentTime = currentTime.clone().add(30, 'minute')) {
       middleHours.push(currentTime.format('HH:mm'));
     }
-    const startOfNextHalfHour = endTime.startOf('hour').add(Math.ceil(endTime.minute() / 30) * 30, 'minute');
-    middleHours.push(startOfNextHalfHour.format('HH:mm'));
+    
+    middleHours.push(endTime.format('HH:mm'));
 
     const convertedData = {
       year: dayjs(data.date_start).year(),
