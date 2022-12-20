@@ -115,6 +115,16 @@ class ShowingQueryRepository {
   createShowing = async (data: any) => {
     const { year, month, week, day, start, end, movie_id, hall_id } = data;
 
+    const startTime = dayjs(start);
+    const endTime = dayjs(end);
+
+    const middleHours = [startTime.format('HH:mm')];
+
+    while (startTime.isBefore(endTime)) {
+      middleHours.push(startTime.add(30, 'minute').format('HH:mm'));
+    }
+    middleHours.push(endTime.format('HH:mm'));
+
     const query = `
       INSERT INTO
           showings
@@ -127,7 +137,8 @@ class ShowingQueryRepository {
               "end",
               movie_id,
               hall_id,
-              break
+              break,
+              middle_hours
           )
       VALUES
           (
@@ -139,7 +150,8 @@ class ShowingQueryRepository {
               '${end}',
               ${movie_id},
               ${hall_id},
-              ${15}
+              ${15},
+              '{${middleHours}}'
           )
       RETURNING
           showing_id as id
