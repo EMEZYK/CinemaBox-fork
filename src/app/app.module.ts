@@ -11,6 +11,7 @@ import { HallModule } from './modules/hall/hall.module';
 import { TicketsModule } from './modules/tickets/tickets.module';
 import { OrdersModule } from './modules/orders/orders.module';
 import { ReservationsModule } from './modules/reservations/reservations.module';
+import { PromoCodesModule } from './modules/promo_codes/promo_codes.module';
 
 @Module({
   imports: [
@@ -22,7 +23,8 @@ import { ReservationsModule } from './modules/reservations/reservations.module';
     ShowingModule,
     HallModule,
     TicketsModule,
-    OrdersModule
+    OrdersModule,
+    PromoCodesModule
   ],
   controllers: [AppController],
   providers: [AppService],
