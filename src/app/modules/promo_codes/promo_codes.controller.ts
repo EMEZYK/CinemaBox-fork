@@ -26,7 +26,7 @@ export class PromoCodesController {
     const response = await this.promoCodesService.getAllPromoCodes();
 
     if (!response) {
-      throw new HttpException(ResponseDictionary.promocodeNotFound, 404);
+      throw new HttpException(ResponseDictionary.promocodesError, 404);
     }
 
     return {
