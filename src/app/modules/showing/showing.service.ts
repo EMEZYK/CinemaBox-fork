@@ -15,6 +15,7 @@ export class ShowingService {
     ) {}
 
   async createShowing(data: any) {
+    console.log(data)
     const movie = await this.movieService.getMovie(data.movie_id);
 
     if (!movie || (Array.isArray(movie) && movie.length === 0)) {
@@ -27,15 +28,27 @@ export class ShowingService {
       WHERE movie_id = ${data.movie_id}
     `)
 
+    const startTime = dayjs(data.start);
+    const endTime = dayjs(data.start).add(+duration[0].duration + 15, 'minute');
+
+    const middleHours = [];
+
+    for (let currentTime = startTime; currentTime.isBefore(endTime); currentTime = currentTime.clone().add(30, 'minute')) {
+      middleHours.push(currentTime.format('HH:mm'));
+    }
+    
+    middleHours.push(endTime.format('HH:mm'));
+
     const convertedData = {
       year: dayjs(data.date_start).year(),
       month: dayjs(data.date_start).month(),
       week: dayjs(data.date_start).week(),
       day: dayjs(data.date_start).date(),
       start: data.start,
-      end: dayjs(data.start).add(duration[0].duration, 'minute').format('YYYY-MM-DD HH:mm'),
+      end: endTime.format('YYYY-MM-DD HH:mm:ss'),
       hall_id: data.hall_id,
-      movie_id: data.movie_id
+      movie_id: data.movie_id,
+      middlehours: `${middleHours}`
     }
 
     return this.showingQueryRepository.createShowing(convertedData)

@@ -11,7 +11,7 @@ import { HallModule } from './modules/hall/hall.module';
 import { TicketsModule } from './modules/tickets/tickets.module';
 import { OrdersModule } from './modules/orders/orders.module';
 import { ReservationsModule } from './modules/reservations/reservations.module';
-import { InfoModule } from './modules/info/info.module';
+import { InfoModule } from "src/app/modules/info/info.module";
 
 @Module({
   imports: [
@@ -24,7 +24,8 @@ import { InfoModule } from './modules/info/info.module';
     HallModule,
     TicketsModule,
     OrdersModule,
-    InfoModule,
+    PromoCodesModule,
+    InfoModule
   ],
   controllers: [AppController],
   providers: [AppService],

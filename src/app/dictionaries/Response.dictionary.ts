@@ -64,6 +64,15 @@ const ResponseDictionary = {
   reservationNotUpdated: 'Wystąpił błąd podczas aktualizacji rezerwacji',
   reservationDeleted: 'Rezerwacja została pomyślnie usunięta',
   reservationNotDeleted: 'Wystąpił błąd podczas usuwania rezerwacji',
+  // promocode
+  promocodesError: 'Nie udało się pobrać listy kodów rabatowych',
+  promocodeNotFound: 'Nie znaleziono kodu rabatowego o podanym id',
+  promocodeCreated: 'Kod rabatowy został pomyślnie dodany',
+  promocodeNotCreated: 'Wystąpił błąd podczas dodawania kodu rabatowego',
+  promocodeUpdated: 'Kod rabatowy został pomyślnie zaktualizowan',
+  promocodeNotUpdated: 'Wystąpił błąd podczas aktualizacji kodu rabatowego',
+  promocodeDeleted: 'Kod rabatowy został pomyślnie usunięty',
+  promocodeNotDeleted: 'Wystąpił błąd podczas usuwania kodu rabatowego',
 } as const
 
 export default ResponseDictionary

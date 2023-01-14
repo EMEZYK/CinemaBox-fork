@@ -50,7 +50,7 @@ class ShowingQueryRepository {
 
     try {
       const result = await this.dbService.query(query);
-      
+
       return result;
     } catch (err) {
       throw new HttpException('Wystąpił błąd podczas pobierania seansów', 500);
@@ -101,9 +101,9 @@ class ShowingQueryRepository {
         keys.forEach(({ key, value }) => {
           if (key === filter) {
             if (index && key) {
-              query += ' AND '
+              query += ' AND ';
             }
-            query += `${filter} = ${value}`
+            query += `${filter} = ${value}`;
           }
         });
       });
@@ -113,7 +113,17 @@ class ShowingQueryRepository {
   };
 
   createShowing = async (data: any) => {
-    const { year, month, week, day, start, end, movie_id, hall_id } = data;
+    const {
+      year,
+      month,
+      week,
+      day,
+      start,
+      end,
+      movie_id,
+      hall_id,
+      middlehours,
+    } = data;
 
     const query = `
       INSERT INTO
@@ -127,7 +137,8 @@ class ShowingQueryRepository {
               "end",
               movie_id,
               hall_id,
-              break
+              break,
+              middle_hours
           )
       VALUES
           (
@@ -139,7 +150,8 @@ class ShowingQueryRepository {
               '${end}',
               ${movie_id},
               ${hall_id},
-              ${15}
+              ${15},
+              '{${middlehours}}'
           )
       RETURNING
           showing_id as id
