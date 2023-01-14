@@ -24,7 +24,7 @@ export class InfoController {
           },
         },
       );
-      return response.data.choices[0].text;
+      return JSON.parse(response.data.choices[0].text);
     } catch (error) {
       throw new HttpException(error, HttpStatus.INTERNAL_SERVER_ERROR);
     }
