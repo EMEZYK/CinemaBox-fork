@@ -67,7 +67,7 @@ export class UserService {
       const result = await this.dbService.query(`
       SELECT 
           email,
-          user_id as id,
+          user_id as userId,
           first_name as firstName,
           last_name as lastName,
           phone_number as phone,
