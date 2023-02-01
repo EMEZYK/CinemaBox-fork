@@ -137,12 +137,9 @@ export class ShowingService {
             movies.rating AS rating
         FROM
             showings
+        INNER JOIN movies ON movies.movie_id = showings.movie_id
         WHERE
-            showing_id = ${id}
-        INNER JOIN 
-            movies 
-        ON 
-            movies.movie_id = showings.movie_id
+            showing_id = ${id} 
       `)
 
       if (Array.isArray(result) && result.length > 0) {
