@@ -245,12 +245,7 @@ export class ShowingService {
             showing_id = ${id}
       `);
 
-      const updatedData = await this.getMovieByShowingId(id);
-
-      return {
-        isError: false,
-        data: updatedData,
-      };
+      return await this.getMovieByShowingId(id);
     } catch (err) {
       return {
         isError: true,
