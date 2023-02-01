@@ -118,6 +118,7 @@ export class ShowingController {
 
     return {
       message: ResponseDictionary.movieUpdated,
+      showing: response,
     };
   }
 

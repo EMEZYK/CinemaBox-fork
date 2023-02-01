@@ -229,8 +229,6 @@ export class ShowingService {
       WHERE showing_id = ${id}
     `);
 
-    console.log(bookedSeats);
-
     if (bookedSeats[0].booked_seats) {
       if (bookedSeats[0].booked_seats.includes(seats)) {
         throw new HttpException('Miejsce jest już zarezerwowane', 400);
@@ -247,9 +245,11 @@ export class ShowingService {
             showing_id = ${id}
       `);
 
+      const updatedData = await this.getMovieByShowingId(id);
+
       return {
         isError: false,
-        data: result,
+        data: updatedData,
       };
     } catch (err) {
       return {
