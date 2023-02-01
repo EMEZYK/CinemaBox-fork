@@ -121,19 +121,22 @@ export class ShowingService {
     try {
       const result = await this.dbService.query(`
       SELECT
-          showing_id AS id,
-          hall_id AS hallid,
-          start,
-          booked_seats as bookedseats,
-          paid_seats as paidseats,
-          movies.movie_id as movieid,
-          movies.title AS title,
-          movies.duration AS duration
-      FROM
-          showings
-      INNER JOIN movies ON movies.movie_id = showings.movie_id
-      WHERE
-          showing_id = ${id}
+            showing_id AS id,
+            start,
+            booked_seats as bookedseats,
+            paid_seats as paidseats,
+            movies.movie_id as movieid,
+            movies.title AS title,
+            movies.duration AS duration,
+            halls.hall_id AS hallid,
+            halls.columns AS columns,
+            halls.rows AS rows
+        FROM
+            showings
+        INNER JOIN movies ON movies.movie_id = showings.movie_id
+        INNER JOIN halls ON halls.hall_id = showings.hall_id
+        WHERE
+            showing_id = ${id}
       `)
 
       if (Array.isArray(result) && result.length > 0) {
