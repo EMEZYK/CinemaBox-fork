@@ -124,17 +124,17 @@ export class ShowingService {
             showing_id AS id,
             movie_id AS movieid,
             hall_id AS hallid,
-            date_start AS start,
-            date_end AS end,
+            start,
+            end,
             booked_seats as bookedseats,
             paid_seats as paidseats,
-            movies.title,
-            movies.description,
-            movies.duration,
-            movies.img,
-            movies.genre,
-            movies.age,
-            movies.rating
+            movies.title AS title,
+            movies.description AS description,
+            movies.duration AS duration,
+            movies.img AS img,
+            movies.genre AS genre,
+            movies.age AS age,
+            movies.rating AS rating
         FROM
             showings
         WHERE
@@ -142,7 +142,7 @@ export class ShowingService {
         INNER JOIN 
             movies 
         ON 
-        movies.movie_id = showings.movie_id
+            movies.movie_id = showings.movie_id
       `)
 
       if (Array.isArray(result) && result.length > 0) {

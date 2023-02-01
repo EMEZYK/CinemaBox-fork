@@ -67,7 +67,7 @@ export class ShowingController {
     }
 
     return {
-      movie: response
+      showing: response
     };
   }
 
