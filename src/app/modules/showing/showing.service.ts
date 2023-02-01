@@ -74,13 +74,14 @@ export class ShowingService {
 
     let showingsCount = 0
 
-    const mapped = showings.map(({ id, movieid, hallid, middlehours, start, end, bookedseats, paidseats }) => { 
+    const mapped = showings.map(({ id, movieid, hallid, hallno, middlehours, start, end, bookedseats, paidseats }) => {
       showingsCount++
 
       return {
         id,
         movieid,
         hallid,
+        hallno,
         start,
         end,
         bookedseats,
@@ -129,6 +130,7 @@ export class ShowingService {
             movies.title AS title,
             movies.duration AS duration,
             halls.hall_id AS hallid,
+            halls.hall_no AS hallno,
             halls.columns AS columns,
             halls.rows AS rows
         FROM

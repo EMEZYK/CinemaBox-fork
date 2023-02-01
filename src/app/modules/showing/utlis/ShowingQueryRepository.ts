@@ -35,6 +35,7 @@ class ShowingQueryRepository {
           "end",
           movie_id as movieId,
           hall_id as hallId,
+          hall_no as hallNo,
           middle_hours as middleHours,
           booked_seats as bookedSeats,
           paid_seats as paidSeats,

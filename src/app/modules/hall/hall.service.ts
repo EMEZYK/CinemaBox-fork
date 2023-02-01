@@ -44,7 +44,7 @@ export class HallService {
             halls
                 (hall_no, rows, columns, capacity)
         VALUES
-            (${hall_no}, ARRAY['${rowsArray}'], ARRAY['${columnsArray}'], ${capacity})
+            (${hall_no}, '{${rowsArray}}', '{${columnsArray}}', ${capacity})
         RETURNING
             hall_id as id
       `);
