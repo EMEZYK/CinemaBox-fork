@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, HttpException } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  HttpException,
+} from '@nestjs/common';
 
 import { PromoCodesService } from './promo_codes.service';
 import { CreatePromoCodeDto } from './dto/create-promo_code.dto';
@@ -10,15 +19,17 @@ export class PromoCodesController {
 
   @Post()
   async createPromoCode(@Body() createPromoCodeDto: CreatePromoCodeDto) {
-    const { isError } = await this.promoCodesService.createPromoCode(createPromoCodeDto);
+    const { isError } = await this.promoCodesService.createPromoCode(
+      createPromoCodeDto,
+    );
 
     if (isError) {
       throw new HttpException(ResponseDictionary.promocodeNotCreated, 400);
     }
 
     return {
-      message: ResponseDictionary.promocodeCreated
-    }
+      message: ResponseDictionary.promocodeCreated,
+    };
   }
 
   @Get()
@@ -31,8 +42,8 @@ export class PromoCodesController {
 
     return {
       promoCodes: response,
-      count: response.length
-    }
+      count: response.length,
+    };
   }
 
   @Get(':id')
@@ -42,28 +53,27 @@ export class PromoCodesController {
 
   @Patch(':id')
   async update(@Param('id') id: number, @Body() body) {
-
-    const response = await this.promoCodesService.update(id, body)
+    const response = await this.promoCodesService.update(id, body);
 
     if (!response) {
       throw new HttpException(ResponseDictionary.promocodeNotUpdated, 400);
     }
 
     return {
-      message: ResponseDictionary.promocodeUpdated
-    }
+      message: ResponseDictionary.promocodeUpdated,
+    };
   }
 
   @Delete(':id')
   async remove(@Param('id') id: number) {
-    const response = await this.promoCodesService.remove(id)
+    const response = await this.promoCodesService.remove(id);
 
     if (!response) {
       throw new HttpException(ResponseDictionary.promocodeNotDeleted, 400);
     }
 
     return {
-      message: ResponseDictionary.promocodeDeleted
-    }
+      message: ResponseDictionary.promocodeDeleted,
+    };
   }
 }

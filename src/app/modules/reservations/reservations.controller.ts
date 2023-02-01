@@ -5,7 +5,6 @@ import {
   Body,
   Patch,
   Param,
-  Delete,
   HttpException,
 } from '@nestjs/common';
 import { Public } from 'src/app/declarations/isPublic';

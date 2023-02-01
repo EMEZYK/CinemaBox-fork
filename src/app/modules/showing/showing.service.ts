@@ -117,6 +117,44 @@ export class ShowingService {
     }
   }
 
+  async getMovieByShowingId(id: number) {
+    try {
+      const result = await this.dbService.query(`
+        SELECT
+            showing_id AS id,
+            movie_id AS movieid,
+            hall_id AS hallid,
+            date_start AS start,
+            date_end AS end,
+            booked_seats as bookedseats,
+            paid_seats as paidseats,
+            movies.title,
+            movies.description,
+            movies.duration,
+            movies.img,
+            movies.genre,
+            movies.age,
+            movies.rating
+        FROM
+            showings
+        WHERE
+            showing_id = ${id}
+        INNER JOIN 
+            movies 
+        ON 
+        movies.movie_id = showings.movie_id
+      `)
+
+      if (Array.isArray(result) && result.length > 0) {
+        return {
+          data: result[0],
+        };
+      }
+    } catch (err) {
+      return null
+    }
+  }
+
   async deleteShowing(id: number) {
     try {
       const result = await this.dbService.query(`
@@ -184,7 +222,7 @@ export class ShowingService {
 
     console.log(bookedSeats)
 
-    seats.forEach(seat => {
+    seats.forEach((seat) => {
       if (bookedSeats[0].booked_seats.includes(seat)) {
         throw new HttpException('Miejsce jest już zarezerwowane', 400)
       }

@@ -57,6 +57,20 @@ export class ShowingController {
     };
   }
 
+  @Public()
+  @Get(':id/movie')
+  async getMovieByShowingId(@Param('id') id: number) {
+    const response = await this.showingService.getMovieByShowingId(id);
+
+    if (!response) {
+      throw new HttpException(ResponseDictionary.movieNotFound, 400);
+    }
+
+    return {
+      movie: response
+    };
+  }
+
   @Delete(':id')
   async deleteShowing(@Param('id') id: number) {
     const response = await this.showingService.deleteShowing(id);
