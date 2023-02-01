@@ -122,12 +122,12 @@ export class ShowingService {
       const result = await this.dbService.query(`
         SELECT
             showing_id AS id,
-            movie_id AS movieid,
             hall_id AS hallid,
             start,
             end,
             booked_seats as bookedseats,
             paid_seats as paidseats,
+            movies.movie_id AS movieid,
             movies.title AS title,
             movies.description AS description,
             movies.duration AS duration,
