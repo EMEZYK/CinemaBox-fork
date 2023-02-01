@@ -34,14 +34,15 @@ class ShowingQueryRepository {
           "start",
           "end",
           movie_id as movieId,
-          hall_id as hallId,
-          hall_no as hallNo,
+          halls.hall_id as hallId,
+          halls.hall_no as hallNo,
           middle_hours as middleHours,
           booked_seats as bookedSeats,
           paid_seats as paidSeats,
           break
       FROM
           showings
+      INNER JOIN halls ON halls.hall_id = showings.hall_id
       ${conditions && `WHERE ${conditions}`} 
       ORDER BY
           showings.year,

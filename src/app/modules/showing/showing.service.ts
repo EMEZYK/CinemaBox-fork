@@ -12,10 +12,10 @@ export class ShowingService {
     private readonly showingQueryRepository: ShowingQueryRepository,
     private readonly movieService: MoviesService,
     private readonly dbService: DBService,
-    ) {}
+  ) {}
 
   async createShowing(data: any) {
-    console.log(data)
+    console.log(data);
     const movie = await this.movieService.getMovie(data.movie_id);
 
     if (!movie || (Array.isArray(movie) && movie.length === 0)) {
@@ -26,17 +26,21 @@ export class ShowingService {
       SELECT duration
       FROM movies
       WHERE movie_id = ${data.movie_id}
-    `)
+    `);
 
     const startTime = dayjs(data.start);
     const endTime = dayjs(data.start).add(+duration[0].duration + 15, 'minute');
 
     const middleHours = [];
 
-    for (let currentTime = startTime; currentTime.isBefore(endTime); currentTime = currentTime.clone().add(30, 'minute')) {
+    for (
+      let currentTime = startTime;
+      currentTime.isBefore(endTime);
+      currentTime = currentTime.clone().add(30, 'minute')
+    ) {
       middleHours.push(currentTime.format('HH:mm'));
     }
-    
+
     middleHours.push(endTime.format('HH:mm'));
 
     const convertedData = {
@@ -48,51 +52,62 @@ export class ShowingService {
       end: endTime.format('YYYY-MM-DD HH:mm:ss'),
       hall_id: data.hall_id,
       movie_id: data.movie_id,
-      middlehours: `${middleHours}`
-    }
+      middlehours: `${middleHours}`,
+    };
 
-    return this.showingQueryRepository.createShowing(convertedData)
+    return this.showingQueryRepository.createShowing(convertedData);
   }
 
-  async getShowings(
-    date: Date | string,
-    filters: string[],
-    hallId?: number
-    ) {
+  async getShowings(date: Date | string, filters: string[], hallId?: number) {
     const showings = await this.showingQueryRepository.getShowingsByFilter(
       date,
       filters,
       hallId,
-    )
+    );
 
     if (!Array.isArray(showings)) {
-      throw new HttpException({
-        message: 'Wystąpił błąd podczas pobierania seansów',
-        data: showings
-      }, 404)
+      throw new HttpException(
+        {
+          message: 'Wystąpił błąd podczas pobierania seansów',
+          data: showings,
+        },
+        404,
+      );
     }
 
-    let showingsCount = 0
+    let showingsCount = 0;
 
-    const mapped = showings.map(({ id, movieid, hallid, hallno, middlehours, start, end, bookedseats, paidseats }) => {
-      showingsCount++
-
-      return {
+    const mapped = showings.map(
+      ({
         id,
         movieid,
         hallid,
         hallno,
+        middlehours,
         start,
         end,
         bookedseats,
         paidseats,
-        middlehours
-      }
-    })
+      }) => {
+        showingsCount++;
+
+        return {
+          id,
+          movieid,
+          hallid,
+          hallno,
+          start,
+          end,
+          bookedseats,
+          paidseats,
+          middlehours,
+        };
+      },
+    );
     return {
       showings: mapped,
-      count: showingsCount
-    }
+      count: showingsCount,
+    };
   }
 
   async getShowing(id: number) {
@@ -106,7 +121,7 @@ export class ShowingService {
           showings
       WHERE
           showing_id = ${id}
-      `)
+      `);
 
       if (Array.isArray(result) && result.length > 0) {
         return {
@@ -114,7 +129,7 @@ export class ShowingService {
         };
       }
     } catch (err) {
-      return null
+      return null;
     }
   }
 
@@ -139,13 +154,13 @@ export class ShowingService {
         INNER JOIN halls ON halls.hall_id = showings.hall_id
         WHERE
             showing_id = ${id}
-      `)
+      `);
 
       if (Array.isArray(result) && result.length > 0) {
         return result[0];
       }
     } catch (err) {
-      return null
+      return null;
     }
   }
 
@@ -212,15 +227,15 @@ export class ShowingService {
       SELECT booked_seats
       FROM showings
       WHERE showing_id = ${id}
-    `)
+    `);
 
-    console.log(bookedSeats)
+    console.log(bookedSeats);
 
     seats.forEach((seat) => {
       if (bookedSeats[0].booked_seats.includes(seat)) {
-        throw new HttpException('Miejsce jest już zarezerwowane', 400)
+        throw new HttpException('Miejsce jest już zarezerwowane', 400);
       }
-    })
+    });
 
     try {
       const result = await this.dbService.query(`
@@ -236,7 +251,6 @@ export class ShowingService {
         isError: false,
         data: result,
       };
-
     } catch (err) {
       return {
         isError: true,
@@ -261,7 +275,7 @@ export class ShowingService {
           isError: false,
           data: result,
         };
-      })
+      });
     } catch (err) {
       return {
         isError: true,
@@ -286,7 +300,7 @@ export class ShowingService {
           isError: false,
           data: result,
         };
-      })
+      });
     } catch (err) {
       return {
         isError: true,
