@@ -221,7 +221,7 @@ export class ShowingService {
     }
   }
 
-  async addToBookedSeats(id: number, seats: string[]) {
+  async addToBookedSeats(id: number, seats: string) {
     // if seat already booked throw error
     const bookedSeats = await this.dbService.query(`
       SELECT booked_seats
@@ -231,11 +231,11 @@ export class ShowingService {
 
     console.log(bookedSeats);
 
-    seats.forEach((seat) => {
-      if (bookedSeats[0].booked_seats.includes(seat)) {
+    if (bookedSeats[0].booked_seats) {
+      if (bookedSeats[0].booked_seats.includes(seats)) {
         throw new HttpException('Miejsce jest już zarezerwowane', 400);
       }
-    });
+    }
 
     try {
       const result = await this.dbService.query(`

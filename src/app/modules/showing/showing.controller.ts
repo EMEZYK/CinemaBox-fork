@@ -32,15 +32,13 @@ export class ShowingController {
   @Public()
   @Get()
   async getShowings(@Query() query) {
-    const {
-      date, filters, hall_id: hallId
-    } = query
+    const { date, filters, hall_id: hallId } = query;
 
     return await this.showingService.getShowings(
       ShowingValidator.date(date),
       ShowingValidator.filters(filters),
       ShowingValidator.hallId(hallId),
-    )
+    );
   }
 
   @Public()
@@ -53,7 +51,7 @@ export class ShowingController {
     }
 
     return {
-      showing: response
+      showing: response,
     };
   }
 
@@ -67,7 +65,7 @@ export class ShowingController {
     }
 
     return {
-      showing: response
+      showing: response,
     };
   }
 
@@ -106,14 +104,11 @@ export class ShowingController {
   @Public()
   @Patch(':id/booked')
   async addToBookedSeats(@Param('id') id: number, @Body() body) {
-    const response = await this.showingService.addToBookedSeats(
-      id,
-      body.seats,
-    );
+    const response = await this.showingService.addToBookedSeats(id, body.seats);
 
     setTimeout(() => {
       this.showingService.removeFromBookedSeats(id, body.seats);
-    }, 10000);
+    }, 900000);
 
     // 15 min = 900000
 
@@ -129,10 +124,7 @@ export class ShowingController {
   @Public()
   @Patch(':id/paid')
   async addToPaidSeats(@Param('id') id: number, @Body() body) {
-    const response = await this.showingService.addToPaidSeats(
-      id,
-      body.seats,
-    );
+    const response = await this.showingService.addToPaidSeats(id, body.seats);
 
     if (!response) {
       throw new HttpException(ResponseDictionary.movieNotUpdated, 400);
