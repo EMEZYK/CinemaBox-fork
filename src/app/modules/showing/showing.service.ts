@@ -120,26 +120,20 @@ export class ShowingService {
   async getMovieByShowingId(id: number) {
     try {
       const result = await this.dbService.query(`
-        SELECT
-            showing_id AS id,
-            hall_id AS hallid,
-            start,
-            end,
-            booked_seats as bookedseats,
-            paid_seats as paidseats,
-            movies.movie_id AS movieid,
-            movies.title AS title,
-            movies.description AS description,
-            movies.duration AS duration,
-            movies.img AS img,
-            movies.genre AS genre,
-            movies.age AS age,
-            movies.rating AS rating
-        FROM
-            showings
-        INNER JOIN movies ON movies.movie_id = showings.movie_id
-        WHERE
-            showing_id = ${id} 
+      SELECT
+          showing_id AS id,
+          hall_id AS hallid,
+          start,
+          booked_seats as bookedseats,
+          paid_seats as paidseats,
+          movies.movie_id as movieid,
+          movies.title AS title,
+          movies.duration AS duration
+      FROM
+          showings
+      INNER JOIN movies ON movies.movie_id = showings.movie_id
+      WHERE
+          showing_id = ${id}
       `)
 
       if (Array.isArray(result) && result.length > 0) {
