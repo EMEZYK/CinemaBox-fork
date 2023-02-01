@@ -39,6 +39,7 @@ export class UserService {
             phone_number as phone,
             first_name as firstName,
             last_name as lastName,
+            is_active as isActive,
             role
         FROM 
             users
@@ -53,6 +54,7 @@ export class UserService {
         lastName: userId[0].lastname,
         userId: userId[0].user_id,
         role: userId[0].role,
+        isActive: userId[0].isactive,
       };
     } catch (err) {
       return {
@@ -62,16 +64,47 @@ export class UserService {
     }
   }
 
+  async getUserAfterLogin(email: string) {
+    try {
+      const result = await this.dbService.query(`
+        SELECT 
+            user_id,
+            phone_number as phone,
+            first_name as firstName,
+            last_name as lastName,
+            is_active as isActive,
+            role
+        FROM 
+            users
+        WHERE
+            email = '${email}'
+      `);
+
+      return {
+        email,
+        phone: result[0].phone,
+        firstName: result[0].firstname,
+        lastName: result[0].lastname,
+        userId: result[0].user_id,
+        role: result[0].role,
+        isActive: result[0].isactive,
+      };
+    } catch (err) {
+      return null;
+    }
+  }
+
   async getUserByEmail(email: string): Promise<{ password: string } | null> {
     try {
       const result = await this.dbService.query(`
       SELECT 
           email,
-          user_id as id,
+          user_id as userId,
           first_name as firstName,
           last_name as lastName,
           phone_number as phone,
           is_active as isActive,
+          role,
           "password"
       FROM 
           users
