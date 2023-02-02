@@ -5,16 +5,11 @@ import { CreatePromoCodeDto } from './dto/create-promo_code.dto';
 
 @Injectable()
 export class PromoCodesService {
-  constructor(
-    private dbService: DBService
-  ) {}
+  constructor(private dbService: DBService) {}
 
   async createPromoCode(createPromoCodeDto: CreatePromoCodeDto) {
     try {
-      const {
-        code,
-        discount
-      } = createPromoCodeDto;
+      const { code, discount } = createPromoCodeDto;
 
       const result = await this.dbService.query(`
             INSERT
@@ -23,16 +18,16 @@ export class PromoCodesService {
                     (promo_code, value)
             VALUES
                 ('${code}', ${discount})
-      `)
+      `);
 
       return {
         data: result[0],
-        isError: false
-      }
+        isError: false,
+      };
     } catch (error) {
       return {
-        isError: true
-      }
+        isError: true,
+      };
     }
   }
 
@@ -43,15 +38,15 @@ export class PromoCodesService {
               *
           FROM
               promo_codes
-      `)
+      `);
 
       if (Array.isArray(result) && result.length > 0) {
-        return result
+        return result;
       }
 
-      return null
+      return null;
     } catch (err) {
-      return null
+      return null;
     }
   }
 
@@ -64,25 +59,22 @@ export class PromoCodesService {
               promo_codes
           WHERE
               promo_id = ${id}
-      `)
+      `);
 
       if (Array.isArray(result) && result.length > 0) {
-        return result[0]
+        return result[0];
       }
 
-      return null
+      return null;
     } catch (err) {
-      return null
+      return null;
     }
   }
 
   async update(id: number, body) {
     try {
-      const {
-        code,
-        discount
-      } = body;
-  
+      const { code, discount } = body;
+
       const result = await this.dbService.query(`
           UPDATE
               promo_codes
@@ -91,16 +83,16 @@ export class PromoCodesService {
               value = ${discount ? `${discount}` : 'value'}
           WHERE
               promo_id = ${id}
-      `)
+      `);
 
       return {
         data: result,
-        isError: false
-      }
+        isError: false,
+      };
     } catch (err) {
       return {
-        isError: true
-      }
+        isError: true,
+      };
     }
   }
 
@@ -112,16 +104,16 @@ export class PromoCodesService {
               promo_codes
           WHERE
               promo_id = ${id}
-      `)
+      `);
 
       return {
         data: result,
-        isError: false
-      }
+        isError: false,
+      };
     } catch (err) {
       return {
-        isError: true
-      }
+        isError: true,
+      };
     }
   }
 }

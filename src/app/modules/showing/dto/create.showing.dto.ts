@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsObject, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber, IsString } from 'class-validator';
 
 export class CreateShowingDto {
   @IsNotEmpty()
@@ -7,7 +7,7 @@ export class CreateShowingDto {
 
   @IsNotEmpty()
   @IsNumber()
-  movie_id: number
+  movie_id: number;
 
   @IsNotEmpty()
   @IsString()

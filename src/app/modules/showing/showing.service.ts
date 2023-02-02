@@ -15,7 +15,6 @@ export class ShowingService {
   ) {}
 
   async createShowing(data: any) {
-    console.log(data);
     const movie = await this.movieService.getMovie(data.movie_id);
 
     if (!movie || (Array.isArray(movie) && movie.length === 0)) {
@@ -222,7 +221,6 @@ export class ShowingService {
   }
 
   async addToBookedSeats(id: number, seats: string) {
-    // if seat already booked throw error
     const bookedSeats = await this.dbService.query(`
       SELECT booked_seats
       FROM showings
@@ -231,7 +229,7 @@ export class ShowingService {
 
     if (bookedSeats[0].booked_seats) {
       if (bookedSeats[0].booked_seats.includes(seats)) {
-        throw new HttpException('Miejsce jest już zarezerwowane', 400);
+        throw new HttpException("Miejsce jest już zarezerwowane!", 400);
       }
     }
 
@@ -279,23 +277,36 @@ export class ShowingService {
     }
   }
 
-  async removeFromBookedSeats(id: number, seats: string[]) {
+  async removeFromBookedSeats(id: number, seats: string[] | string) {
     try {
-      seats.forEach(async (seat, index) => {
-        const result = await this.dbService.query(`
-        UPDATE
-            showings
-        SET
-            booked_seats = array_remove(booked_seats, '${seats[index]}')
-        WHERE
-            showing_id = ${id}
+      if (typeof seats === 'object') {
+        seats.forEach(async (seat, index) => {
+          const result = await this.dbService.query(`
+          UPDATE
+              showings
+          SET
+              booked_seats = array_remove(booked_seats, '${seats[index]}')
+          WHERE
+              showing_id = ${id}
         `);
 
-        return {
-          isError: false,
-          data: result,
-        };
-      });
+          return {
+            isError: false,
+            data: result,
+          };
+        });
+      } else {
+        const result = await this.dbService.query(`
+          UPDATE
+              showings
+          SET
+              booked_seats = array_remove(booked_seats, '${seats}')
+          WHERE
+              showing_id = ${id}
+          `);
+
+          return await this.getMovieByShowingId(id);
+      }
     } catch (err) {
       return {
         isError: true,
