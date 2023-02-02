@@ -230,7 +230,7 @@ export class ShowingService {
 
     if (bookedSeats[0].booked_seats) {
       if (bookedSeats[0].booked_seats.includes(seats)) {
-        this.removeFromBookedSeats(id, seats);
+        throw new HttpException("Miejsce jest już zarezerwowane!", 400);
       }
     }
 
@@ -289,7 +289,7 @@ export class ShowingService {
               booked_seats = array_remove(booked_seats, '${seats[index]}')
           WHERE
               showing_id = ${id}
-          `);
+        `);
 
           return {
             isError: false,
@@ -306,10 +306,7 @@ export class ShowingService {
               showing_id = ${id}
           `);
 
-          return {
-            isError: false,
-            data: result,
-          };
+          return this.getMovieByShowingId(id);
       }
     } catch (err) {
       return {
