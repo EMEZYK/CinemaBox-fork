@@ -280,21 +280,37 @@ export class ShowingService {
 
   async removeFromBookedSeats(id: number, seats: string[] | string) {
     try {
-      seats.forEach(async (seat, index) => {
-        const result = await this.dbService.query(`
-        UPDATE
-            showings
-        SET
-            booked_seats = array_remove(booked_seats, '${seats[index]}')
-        WHERE
-            showing_id = ${id}
-        `);
+      if (typeof seats === 'object') {
+        seats.forEach(async (seat, index) => {
+          const result = await this.dbService.query(`
+          UPDATE
+              showings
+          SET
+              booked_seats = array_remove(booked_seats, '${seats[index]}')
+          WHERE
+              showing_id = ${id}
+          `);
 
-        return {
-          isError: false,
-          data: result,
-        };
-      });
+          return {
+            isError: false,
+            data: result,
+          };
+        });
+      } else {
+        const result = await this.dbService.query(`
+          UPDATE
+              showings
+          SET
+              booked_seats = array_remove(booked_seats, '${seats}')
+          WHERE
+              showing_id = ${id}
+          `);
+
+          return {
+            isError: false,
+            data: result,
+          };
+      }
     } catch (err) {
       return {
         isError: true,
