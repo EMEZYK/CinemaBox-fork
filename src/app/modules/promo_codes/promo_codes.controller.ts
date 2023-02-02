@@ -12,6 +12,7 @@ import {
 import { PromoCodesService } from './promo_codes.service';
 import { CreatePromoCodeDto } from './dto/create-promo_code.dto';
 import ResponseDictionary from 'src/app/dictionaries/Response.dictionary';
+import { Public } from 'src/app/declarations/isPublic';
 
 @Controller('promo-codes')
 export class PromoCodesController {
@@ -32,6 +33,7 @@ export class PromoCodesController {
     };
   }
 
+  @Public()
   @Get()
   async getAllPromoCodes() {
     const response = await this.promoCodesService.getAllPromoCodes();

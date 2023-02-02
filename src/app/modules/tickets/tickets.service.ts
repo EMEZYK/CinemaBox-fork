@@ -6,9 +6,7 @@ import { UpdateTicketDto } from './dto/update-ticket.dto';
 
 @Injectable()
 export class TicketsService {
-  constructor(
-    private readonly dbService: DBService,
-  ) {}
+  constructor(private readonly dbService: DBService) {}
   create(createTicketDto: CreateTicketDto) {
     return 'This action adds a new ticket';
   }
@@ -23,16 +21,16 @@ export class TicketsService {
         ORDER BY
             price
         DESC
-      `)
+      `);
 
       if (Array.isArray(result) && result.length > 0) {
-        return result
+        return result;
       }
 
-      return null
+      return null;
     } catch (err) {
-      console.log(err)
-      return null
+      console.log(err);
+      return null;
     }
   }
 
