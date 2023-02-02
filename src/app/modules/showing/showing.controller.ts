@@ -113,7 +113,8 @@ export class ShowingController {
     // 15 min = 900000
 
     if (!response) {
-      throw new HttpException(ResponseDictionary.movieNotUpdated, 400);
+      this.showingService.removeFromBookedSeats(id, body.seats);
+      // throw new HttpException(ResponseDictionary.movieNotUpdated, 400);
     }
 
     return {
