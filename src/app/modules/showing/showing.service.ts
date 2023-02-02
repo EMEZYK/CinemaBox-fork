@@ -306,7 +306,7 @@ export class ShowingService {
               showing_id = ${id}
           `);
 
-          return this.getMovieByShowingId(id);
+          return await this.getMovieByShowingId(id);
       }
     } catch (err) {
       return {
