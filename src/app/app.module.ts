@@ -13,6 +13,7 @@ import { OrdersModule } from './modules/orders/orders.module';
 import { ReservationsModule } from './modules/reservations/reservations.module';
 import { InfoModule } from 'src/app/modules/info/info.module';
 import { PromoCodesModule } from 'src/app/modules/promo_codes/promo_codes.module';
+import { WishlistModule } from './modules/wishlist/wishlist.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { PromoCodesModule } from 'src/app/modules/promo_codes/promo_codes.module
     OrdersModule,
     PromoCodesModule,
     InfoModule,
+    WishlistModule,
   ],
   controllers: [AppController],
   providers: [AppService],

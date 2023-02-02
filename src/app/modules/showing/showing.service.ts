@@ -15,7 +15,6 @@ export class ShowingService {
   ) {}
 
   async createShowing(data: any) {
-    console.log(data);
     const movie = await this.movieService.getMovie(data.movie_id);
 
     if (!movie || (Array.isArray(movie) && movie.length === 0)) {
