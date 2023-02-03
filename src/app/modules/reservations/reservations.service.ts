@@ -16,8 +16,26 @@ export class ReservationsService {
     phone_number: string,
     email: string,
     total_price: number,
+    newsletter: boolean,
   ) {
     try {
+      if (newsletter) {
+        await this.dbService.query(`
+          INSERT
+          INTO
+              newsletter
+                  (
+                    email
+                  )
+          VALUES
+              (
+                '${email}'
+              )
+          RETURNING
+              email
+        `);
+      }
+
       const result = await this.dbService.query(`
           INSERT
           INTO

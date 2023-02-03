@@ -29,10 +29,11 @@ export class ReservationsController {
       body.phone_number,
       body.email,
       body.total_price,
+      body.newsletter
     );
 
     if (isError) {
-      throw new HttpException(ResponseDictionary.reservationsError, 400);
+      throw new HttpException(ResponseDictionary.reservationNotCreated, 400);
     }
 
     return {
