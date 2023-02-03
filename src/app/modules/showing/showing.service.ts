@@ -43,10 +43,10 @@ export class ShowingService {
     middleHours.push(endTime.format('HH:mm'));
 
     const convertedData = {
-      year: dayjs(data.date_start).year(),
-      month: dayjs(data.date_start).month(),
-      week: dayjs(data.date_start).week(),
-      day: dayjs(data.date_start).date(),
+      year: dayjs(data.start).year(),
+      month: dayjs(data.start).month(),
+      week: dayjs(data.start).week(),
+      day: dayjs(data.start).date(),
       start: data.start,
       end: endTime.format('YYYY-MM-DD HH:mm:ss'),
       hall_id: data.hall_id,

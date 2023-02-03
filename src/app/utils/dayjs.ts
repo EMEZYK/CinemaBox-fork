@@ -8,6 +8,6 @@ dayjs.extend(weekOfYear);
 dayjs.extend(duration);
 dayjs.extend(isBetween);
 
-dayjs.locale('pl')
+dayjs.locale('pl');
 
 export default dayjs;
