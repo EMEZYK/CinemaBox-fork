@@ -80,7 +80,7 @@ export class ReservationsController {
     }
 
     return {
-      reservation: response,
+      ticket: response,
     };
   }
 
