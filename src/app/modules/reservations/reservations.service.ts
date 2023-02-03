@@ -151,9 +151,19 @@ export class ReservationsService {
     try {
       const result = await this.dbService.query(`
           SELECT
-              *
+              first_name as firstName,
+              last_name as lastName,
+              email,
+              phone_number as phoneNumber,
+              ticket_no as ticketNo,
+              showings.start as start,
+              halls.hall_no as hallNo,
+              movies.title as title
           FROM
               reservations
+          INNER JOIN showings ON showings.showing_id = reservations.showing_id
+          INNER JOIN movies ON movies.movie_id = showings.movie_id
+          INNER JOIN halls ON halls.hall_id = showings.hall_id
           WHERE
               ticket_no = ${ticketNo}
           ORDER BY
