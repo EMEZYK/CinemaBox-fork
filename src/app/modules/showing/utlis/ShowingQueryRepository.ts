@@ -140,7 +140,9 @@ class ShowingQueryRepository {
               movie_id,
               hall_id,
               break,
-              middle_hours
+              middle_hours,
+              booked_seats,
+              paid_seats
           )
       VALUES
           (
@@ -153,7 +155,9 @@ class ShowingQueryRepository {
               ${movie_id},
               ${hall_id},
               ${15},
-              '{${middlehours}}'
+              '{${middlehours}}',
+              '{}',
+              '{}'
           )
       RETURNING
           showing_id as id
