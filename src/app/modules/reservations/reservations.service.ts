@@ -155,6 +155,7 @@ export class ReservationsService {
               last_name as lastName,
               email,
               seats,
+              total_price as totalPrice,
               phone_number as phoneNumber,
               ticket_no as ticketNo,
               showings.start as start,
