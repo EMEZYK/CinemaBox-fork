@@ -13,24 +13,60 @@ export class HallService {
     try {
       const { rows = 10, columns = 16, hall_no } = createHallData;
 
+      let hallNo = hall_no;
+
       if (rows < 1 || columns < 1) {
         return {
           isError: true,
-          data: null,
+          message: 'Rząd i kolumna muszą być większe od 0',
         };
       }
 
       if (hall_no < 1 || hall_no > 50) {
         return {
           isError: true,
-          data: null,
+          message: 'Numer sali musi być większy od 0 i mniejszy od 50',
         };
       }
 
       if (rows > 26) {
         return {
           isError: true,
-          data: null,
+          message: 'Maksymalna liczba rzędów to 26',
+        };
+      }
+
+      if (!hallNo) {
+        const lastHall = await this.dbService.query(`
+          SELECT
+              hall_no
+          FROM
+              halls
+          ORDER BY
+              hall_no DESC
+          LIMIT 1
+        `);
+
+        if (lastHall.length) {
+          hallNo = lastHall[0].hall_no + 1;
+        } else {
+          hallNo = 1;
+        }
+      }
+
+      const hallNoExists = await this.dbService.query(`
+        SELECT
+            hall_no
+        FROM
+            halls
+        WHERE
+            hall_no = ${hallNo}
+      `);
+
+      if (hallNoExists.length) {
+        return {
+          isError: true,
+          message: 'Sala o podanym numerze już istnieje',
         };
       }
 
@@ -44,18 +80,20 @@ export class HallService {
             halls
                 (hall_no, rows, columns, capacity)
         VALUES
-            (${hall_no}, '{${rowsArray}}', '{${columnsArray}}', ${capacity})
+            (${hallNo}, '{${rowsArray}}', '{${columnsArray}}', ${capacity})
         RETURNING
             hall_id as id
       `);
 
       return {
         isError: false,
+        message: 'Sala została pomyślnie dodana',
         data: result[0],
       };
     } catch (err) {
       return {
         isError: true,
+        message: 'Wystąpił błąd podczas dodawania sali',
         data: err,
       };
     }

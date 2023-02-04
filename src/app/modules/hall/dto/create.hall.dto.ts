@@ -1,15 +1,15 @@
-import { IsNotEmpty, IsNumber, IsOptional } from "class-validator";
+import { IsNumber, IsOptional } from 'class-validator';
 
 export class CreateHallDto {
   @IsOptional()
   @IsNumber()
-  rows: number
+  rows: number;
 
   @IsOptional()
   @IsNumber()
-  columns: number
+  columns: number;
 
-  @IsNotEmpty()
+  @IsOptional()
   @IsNumber()
   hall_no: number;
 }

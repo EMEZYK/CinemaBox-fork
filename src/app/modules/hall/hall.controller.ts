@@ -21,14 +21,16 @@ export class HallController {
 
   @Post()
   async createHall(@Body() createHallDto: CreateHallDto) {
-    const { isError } = await this.hallService.createHall(createHallDto);
+    const { isError, message } = await this.hallService.createHall(
+      createHallDto,
+    );
 
     if (isError) {
-      throw new HttpException(ResponseDictionary.hallNotCreated, 400);
+      throw new HttpException(message, 400);
     }
 
     return {
-      message: ResponseDictionary.hallCreated,
+      message: isError,
     };
   }
 
