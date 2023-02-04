@@ -85,10 +85,17 @@ export class HallService {
             hall_id as id
       `);
 
+      const updatedHalls = await this.dbService.query(`
+        SELECT
+          *
+        FROM
+          halls
+        `);
+
       return {
         isError: false,
         message: 'Sala została pomyślnie dodana',
-        data: result[0],
+        data: updatedHalls,
       };
     } catch (err) {
       return {

@@ -21,7 +21,7 @@ export class HallController {
 
   @Post()
   async createHall(@Body() createHallDto: CreateHallDto) {
-    const { isError, message } = await this.hallService.createHall(
+    const { isError, message, data } = await this.hallService.createHall(
       createHallDto,
     );
 
@@ -31,6 +31,7 @@ export class HallController {
 
     return {
       message: isError,
+      halls: data,
     };
   }
 
@@ -62,7 +63,10 @@ export class HallController {
   }
 
   @Patch(':id')
-  async updateHall(@Param('id') id: number, @Body() updateHallDto: UpdateHallDto) {
+  async updateHall(
+    @Param('id') id: number,
+    @Body() updateHallDto: UpdateHallDto,
+  ) {
     const response = await this.hallService.updateHall(id, updateHallDto);
 
     if (!response) {
