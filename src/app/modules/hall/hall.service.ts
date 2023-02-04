@@ -182,9 +182,16 @@ export class HallService {
             hall_id = ${id}
       `);
 
+      const updatedHalls = await this.dbService.query(`
+        SELECT
+          *
+        FROM
+          halls
+        `);
+
       return {
         isError: false,
-        data: result,
+        halls: updatedHalls,
       };
     } catch (err) {
       return {
