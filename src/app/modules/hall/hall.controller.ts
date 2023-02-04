@@ -67,14 +67,15 @@ export class HallController {
     @Param('id') id: number,
     @Body() updateHallDto: UpdateHallDto,
   ) {
-    const response = await this.hallService.updateHall(id, updateHallDto);
+    const { isError, data } = await this.hallService.updateHall(id, updateHallDto);
 
-    if (!response) {
+    if (isError) {
       throw new HttpException(ResponseDictionary.hallNotUpdated, 400);
     }
 
     return {
       message: ResponseDictionary.hallUpdated,
+      halls: data,
     };
   }
 

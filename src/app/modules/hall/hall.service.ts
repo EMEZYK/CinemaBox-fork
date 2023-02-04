@@ -176,8 +176,9 @@ export class HallService {
         UPDATE
             halls
         SET
-            rows = ${rows ? `ARRAY['${updatedRowsArray}']` : 'rows'},
-            columns = ${columns ? `ARRAY['${updatedColumnsArray}']` : 'columns'}
+            rows = ${rows ? `'{${updatedRowsArray}}'` : 'rows'},
+            columns = ${columns ? `'{${updatedColumnsArray}}'` : 'columns'},
+            capacity = ${rows && columns ? rows * columns : 'capacity'}
         WHERE
             hall_id = ${id}
       `);
@@ -191,7 +192,7 @@ export class HallService {
 
       return {
         isError: false,
-        halls: updatedHalls,
+        data: updatedHalls,
       };
     } catch (err) {
       return {

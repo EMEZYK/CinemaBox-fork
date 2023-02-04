@@ -229,7 +229,7 @@ export class ShowingService {
 
     if (bookedSeats[0].booked_seats) {
       if (bookedSeats[0].booked_seats.includes(seats)) {
-        throw new HttpException("Miejsce jest już zarezerwowane!", 400);
+        throw new HttpException('Miejsce jest już zarezerwowane!', 400);
       }
     }
 
@@ -305,7 +305,7 @@ export class ShowingService {
               showing_id = ${id}
           `);
 
-          return await this.getMovieByShowingId(id);
+        return await this.getMovieByShowingId(id);
       }
     } catch (err) {
       return {
