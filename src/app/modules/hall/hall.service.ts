@@ -184,10 +184,16 @@ export class HallService {
       `);
 
       const updatedHalls = await this.dbService.query(`
-        SELECT
-          *
-        FROM
-          halls
+          SELECT
+              hall_id as id,
+              hall_no as hallNo,
+              rows,
+              columns,
+              capacity
+          FROM
+              halls
+          ORDER BY
+              hall_no
         `);
 
       return {
