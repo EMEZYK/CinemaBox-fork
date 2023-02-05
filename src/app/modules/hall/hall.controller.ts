@@ -81,14 +81,15 @@ export class HallController {
 
   @Delete(':id')
   async deleteHall(@Param('id') id: number) {
-    const response = await this.hallService.deleteHall(id);
+    const { isError, data } = await this.hallService.deleteHall(id);
 
-    if (!response) {
+    if (isError) {
       throw new HttpException(ResponseDictionary.hallNotDeleted, 400);
     }
 
     return {
       message: ResponseDictionary.hallDeleted,
+      halls: data,
     };
   }
 }

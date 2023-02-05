@@ -86,10 +86,16 @@ export class HallService {
       `);
 
       const updatedHalls = await this.dbService.query(`
-        SELECT
-          *
-        FROM
-          halls
+          SELECT
+              hall_id as id,
+              hall_no as hallNo,
+              rows,
+              columns,
+              capacity
+          FROM
+              halls
+          ORDER BY
+              hall_no
         `);
 
       return {
@@ -210,6 +216,26 @@ export class HallService {
 
   async deleteHall(id: number) {
     try {
+      // if show exists in this hall - delete it
+      const showExists = await this.dbService.query(`
+        SELECT
+            showing_id
+        FROM
+            showings
+        WHERE
+            hall_id = ${id}
+      `);
+
+      if (showExists.length) {
+        const deleteShow = await this.dbService.query(`
+          DELETE
+          FROM
+              showings
+          WHERE
+              hall_id = ${id}
+        `);
+      }
+
       const result = await this.dbService.query(`
         DELETE
         FROM
@@ -218,9 +244,22 @@ export class HallService {
             hall_id = ${id}
       `);
 
+      const updatedHalls = await this.dbService.query(`
+          SELECT
+              hall_id as id,
+              hall_no as hallNo,
+              rows,
+              columns,
+              capacity
+          FROM
+              halls
+          ORDER BY
+              hall_no
+        `);
+
       return {
         isError: false,
-        data: result,
+        data: updatedHalls,
       };
     } catch (err) {
       return {
