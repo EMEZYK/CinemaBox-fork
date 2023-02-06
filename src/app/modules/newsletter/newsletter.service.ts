@@ -6,7 +6,7 @@ export class NewsletterService {
   constructor(private readonly dbService: DBService) {}
   async getNewsletter() {
     try {
-      const result = this.dbService.query('SELECT * FROM newsletter');
+      const result = await this.dbService.query('SELECT * FROM newsletter');
 
       return {
         isError: false,
