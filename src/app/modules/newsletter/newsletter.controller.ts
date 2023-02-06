@@ -27,8 +27,31 @@ export class NewsletterController {
     };
   }
 
+  @Post()
+  async checkIfEmailExists(@Body() body) {
+    const { isError, data } = await this.newsletterService.checkIfEmailExists(
+      body.email,
+    );
+
+    if (isError) {
+      throw new HttpException('Nie udało się pobrać newsletter', 400);
+    }
+
+    return {
+      newsletter: data,
+    };
+  }
+
   @Delete(':id')
-  remove(@Param('id') id: number) {
-    return this.newsletterService.remove(id);
+  async remove(@Param('id') id: number) {
+    const { isError, data } = await this.newsletterService.remove(id);
+
+    if (isError) {
+      throw new HttpException('Nie udało się usunąć newsletter', 400);
+    }
+
+    return {
+      newsletter: data,
+    };
   }
 }
