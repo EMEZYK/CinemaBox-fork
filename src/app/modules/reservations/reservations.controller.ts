@@ -65,7 +65,7 @@ export class ReservationsController {
     }
 
     return {
-      reservations: response,
+      tickets: response,
       count: response.length,
     };
   }
