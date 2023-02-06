@@ -29,7 +29,7 @@ export class ReservationsController {
       body.phone_number,
       body.email,
       body.total_price,
-      body.newsletter
+      body.newsletter,
     );
 
     if (isError) {

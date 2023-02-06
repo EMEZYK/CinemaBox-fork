@@ -14,6 +14,7 @@ import { ReservationsModule } from './modules/reservations/reservations.module';
 import { InfoModule } from 'src/app/modules/info/info.module';
 import { PromoCodesModule } from 'src/app/modules/promo_codes/promo_codes.module';
 import { WishlistModule } from './modules/wishlist/wishlist.module';
+import { NewsletterModule } from './modules/newsletter/newsletter.module';
 
 @Module({
   imports: [
@@ -29,6 +30,7 @@ import { WishlistModule } from './modules/wishlist/wishlist.module';
     PromoCodesModule,
     InfoModule,
     WishlistModule,
+    NewsletterModule,
   ],
   controllers: [AppController],
   providers: [AppService],
