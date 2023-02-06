@@ -19,20 +19,27 @@ export class ReservationsService {
     newsletter: boolean,
   ) {
     try {
-      if (newsletter) {
-        await this.dbService.query(`
-          INSERT
-          INTO
+      const checkIfEmailExists = await this.dbService.query(`
+          SELECT
+              *
+          FROM
               newsletter
-                  (
-                    email
-                  )
-          VALUES
-              (
-                '${email}'
-              )
-          RETURNING
-              email
+          WHERE
+              email = '${email}'
+      `);
+
+      if (checkIfEmailExists.length === 0 && newsletter) {
+        await this.dbService.query(`
+            INSERT
+            INTO
+                newsletter
+                    (
+                        email
+                    )
+            VALUES
+                (
+                    '${email}'
+                )
         `);
       }
 
@@ -129,9 +136,17 @@ export class ReservationsService {
     try {
       const result = await this.dbService.query(`
           SELECT
-              *
+              ticket_no as ticketNo,
+              movies.title as title,
+              showings.start as start,
+              halls.hall_no as hallNo,
+              seats,
+              total_price as totalPrice
           FROM
               reservations
+          INNER JOIN showings ON showings.showing_id = reservations.showing_id
+          INNER JOIN movies ON movies.movie_id = showings.movie_id
+          INNER JOIN halls ON halls.hall_id = showings.hall_id
           WHERE
               user_id = ${id}
           ORDER BY
