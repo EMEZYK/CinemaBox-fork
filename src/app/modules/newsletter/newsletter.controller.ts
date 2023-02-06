@@ -22,8 +22,6 @@ export class NewsletterController {
       throw new HttpException('Nie udało się pobrać newsletter', 400);
     }
 
-    console.log(data)
-
     return {
       newsletter: data,
     };
