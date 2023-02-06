@@ -153,7 +153,7 @@ export class ReservationsService {
               reservation_id
       `);
       if (Array.isArray(result) && result.length > 0) {
-        return result[0];
+        return result;
       }
 
       return null;
