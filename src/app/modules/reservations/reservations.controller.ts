@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   HttpException,
+  Headers,
 } from '@nestjs/common';
 import { Public } from 'src/app/declarations/isPublic';
 import ResponseDictionary from 'src/app/dictionaries/Response.dictionary';
@@ -72,7 +73,10 @@ export class ReservationsController {
 
   @Public()
   @Get('ticket/:id')
-  async getReservationByTicket(@Param('id') id: number) {
+  async getReservationByTicket(@Param('id') id: number, @Headers() headers) {
+    if (id !== headers.ticket_no) {
+      throw new HttpException('Nie masz dostępu do tej strony', 404);
+    }
     const response = await this.reservationsService.getReservationByTicket(id);
 
     if (!response) {
@@ -86,7 +90,10 @@ export class ReservationsController {
 
   @Public()
   @Post('ticket')
-  async getReservationByTicketNoAndEmail(@Body() body) {
+  async getReservationByTicketNoAndEmail(@Body() body, @Headers() headers) {
+    if (body.ticket_no !== headers.ticket_no) {
+      throw new HttpException('Nie masz dostępu do tej strony', 404);
+    }
     const response =
       await this.reservationsService.getReservationByTicketNoAndEmail(
         body.ticket_no,
