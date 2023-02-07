@@ -11,11 +11,11 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 
-import { Public } from 'src/app/declarations/isPublic';
 import ResponseDictionary from 'src/app/dictionaries/Response.dictionary';
 import { CreateUserDto } from './dto/user.create.dto';
 import { UserUpdateDto } from './dto/user.update.dto';
 import { UserService } from './User.service';
+import { Public } from "src/app/declarations/isPublic";
 
 @Controller('/users')
 export class UserController {

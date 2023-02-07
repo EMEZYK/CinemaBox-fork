@@ -33,6 +33,8 @@ export class ReservationsController {
       body.newsletter,
     );
 
+    console.log(isError, data);
+
     if (isError) {
       throw new HttpException(ResponseDictionary.reservationNotCreated, 400);
     }

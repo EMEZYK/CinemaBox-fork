@@ -47,18 +47,18 @@ export class ReservationsService {
           INSERT
           INTO
               reservations
-                  (
-                    showing_id,
-                    seats,
-                    user_id,
-                    ticket_no,
-                    blik_code,
-                    first_name,
-                    last_name,
-                    phone_number,
-                    email,
-                    total_price
-                  )
+          (
+              showing_id,
+              seats,
+              user_id,
+              ticket_no,
+              blik_code,
+              first_name,
+              last_name,
+              phone_number,
+              email,
+              total_price
+          )
           VALUES
               (
                 ${showing_id},
@@ -70,7 +70,7 @@ export class ReservationsService {
                 '${last_name}',
                 '${phone_number}',
                 '${email}',
-                '${total_price}'
+                ${total_price}
               )
           RETURNING
               ticket_no as ticketNo
