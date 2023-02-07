@@ -85,6 +85,24 @@ export class ReservationsController {
   }
 
   @Public()
+  @Post('ticket')
+  async getReservationByTicketNoAndEmail(@Body() body) {
+    const response =
+      await this.reservationsService.getReservationByTicketNoAndEmail(
+        body.ticket_no,
+        body.email,
+      );
+
+    if (!response) {
+      throw new HttpException(ResponseDictionary.reservationsError, 400);
+    }
+
+    return {
+      ticket_no: response,
+    };
+  }
+
+  @Public()
   @Patch(':id')
   async refundReservation(@Param('id') id: number) {
     const response = await this.reservationsService.refundReservation(id);

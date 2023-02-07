@@ -196,6 +196,28 @@ export class ReservationsService {
     }
   }
 
+  async getReservationByTicketNoAndEmail(ticketNo: number, email: string) {
+    try {
+      const result = await this.dbService.query(`
+        SELECT
+            ticket_no
+        FROM
+            reservations
+        WHERE
+            ticket_no = ${ticketNo}
+        AND
+            email = '${email}'
+      `);
+
+      return result[0].ticket_no;
+    } catch (err) {
+      console.log(err);
+      return {
+        isError: true,
+      };
+    }
+  }
+
   // refund reservation by ticket number only if it's showing starts not earlier than 24h from now
   async refundReservation(ticketNo: number) {
     try {
