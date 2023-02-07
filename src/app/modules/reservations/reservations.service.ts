@@ -228,8 +228,6 @@ export class ReservationsService {
               reservations
           WHERE
               ticket_no = ${ticketNo}
-          ORDER BY
-              reservation_id
       `);
       if (Array.isArray(result) && result.length > 0) {
         const reservation = result[0];
@@ -264,18 +262,13 @@ export class ReservationsService {
                     showing_id = ${reservation.showing_id}
             `);
             return {
-              data: {
-                message: 'Zwrot rezerwacji przebiegł pomyślnie',
-              },
               isError: false,
+              timeError: false,
+              data: 'Rezerwacja została pomyślnie zwrócona',
             };
           } else {
             return {
-              data: {
-                message:
-                  'Nie można zwrócić rezerwacji, ponieważ seans rozpocznie się za mniej niż 24h',
-              },
-              isError: true,
+              timeError: true,
             };
           }
         }

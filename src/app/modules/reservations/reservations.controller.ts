@@ -112,14 +112,22 @@ export class ReservationsController {
   @Public()
   @Patch(':id')
   async refundReservation(@Param('id') id: number) {
-    const response = await this.reservationsService.refundReservation(id);
+    const { isError, timeError, data } =
+      await this.reservationsService.refundReservation(id);
 
-    if (!response) {
+    if (isError) {
       throw new HttpException(ResponseDictionary.reservationsError, 400);
     }
 
+    if (timeError) {
+      throw new HttpException(
+        'Nie można zwrócić rezerwacji, ponieważ do seansu zostało mniej niż 24h',
+        400,
+      );
+    }
+
     return {
-      message: response,
+      message: data,
     };
   }
 }
