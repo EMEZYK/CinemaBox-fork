@@ -127,7 +127,6 @@ export class ReservationsService {
 
       return null;
     } catch (err) {
-      console.log(err);
       return null;
     }
   }

@@ -8,7 +8,7 @@ export class DBService {
   private static getDBPool() {
     return new Pool({
       connectionString: process.env.DATABASE_URL,
-      ssl: { rejectUnauthorized: false }
+      ssl: { rejectUnauthorized: false },
     });
   }
 
