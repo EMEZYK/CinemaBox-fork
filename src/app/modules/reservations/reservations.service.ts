@@ -217,7 +217,6 @@ export class ReservationsService {
     }
   }
 
-  // refund reservation by ticket number only if it's showing starts not earlier than 24h from now
   async refundReservation(ticketNo: number) {
     try {
       const result = await this.dbService.query(`
@@ -240,8 +239,9 @@ export class ReservationsService {
             ORDER BY
                 showing_id
         `);
+        console.log(showing);
         if (Array.isArray(showing) && showing.length > 0) {
-          const showingDate = new Date(showing[0].date);
+          const showingDate = new Date(showing[0].start);
           const now = new Date();
           if (showingDate.getTime() - now.getTime() > 86400000) {
             await this.dbService.query(`
