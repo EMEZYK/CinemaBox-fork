@@ -210,7 +210,6 @@ export class ReservationsService {
 
       return result[0].ticket_no;
     } catch (err) {
-      console.log(err);
       return {
         isError: true,
       };
@@ -224,56 +223,48 @@ export class ReservationsService {
               *
           FROM
               reservations
+          INNER JOIN showings ON showings.showing_id = reservations.showing_id
           WHERE
               ticket_no = ${ticketNo}
       `);
-      if (Array.isArray(result) && result.length > 0) {
-        const reservation = result[0];
-        const showing = await this.dbService.query(`
-            SELECT
-                *
-            FROM
-                showings
-            WHERE
-                showing_id = ${reservation.showing_id}
-            ORDER BY
-                showing_id
-        `);
-        console.log(showing);
-        if (Array.isArray(showing) && showing.length > 0) {
-          const showingDate = new Date(showing[0].start);
-          const now = new Date();
-          if (showingDate.getTime() - now.getTime() > 86400000) {
-            await this.dbService.query(`
-                DELETE
-                FROM
-                    reservations
-                WHERE
-                    ticket_no = ${ticketNo}
-            `);
 
-            await this.dbService.query(`
-                UPDATE
-                    showings
-                SET
-                    paid_seats = paid_seats - '{${reservation.seats}}'
-                WHERE
-                    showing_id = ${reservation.showing_id}
-            `);
-            return {
-              isError: false,
-              timeError: false,
-              data: 'Rezerwacja została pomyślnie zwrócona',
-            };
-          } else {
-            return {
-              timeError: true,
-            };
-          }
+      console.log(result);
+
+      if (Array.isArray(result) && result.length > 0) {
+        const showingDate = new Date(result[0].start);
+        const now = new Date();
+
+        if (showingDate.getTime() - now.getTime() > 86400000) {
+          await this.dbService.query(`
+              DELETE
+              FROM
+                  reservations
+              WHERE
+                  ticket_no = ${ticketNo}
+          `);
+
+          const seats = result[0].seats;
+          const paidSeats = result[0].paid_seats;
+          const paidSeatsWithoutSeats = paidSeats.filter(
+            (seat: string) => !seats.includes(seat),
+          );
+
+          await this.dbService.query(`
+              UPDATE
+                  showings
+              SET
+                  paid_seats = ${
+                    seats ? `'{${paidSeatsWithoutSeats}}'` : 'paid_seats'
+                  }
+              WHERE
+                  showing_id = ${result[0].showing_id}
+          `);
+
+          return 'Rezerwacja została pomyślnie zwrócona';
+        } else {
+          return 'Nie można zwrócić rezerwacji, która jest mniej niż 24h przed seansem';
         }
       }
-
-      return null;
     } catch (err) {
       return null;
     }
