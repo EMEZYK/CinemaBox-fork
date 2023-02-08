@@ -4,7 +4,7 @@ type UserPostData = {
   phoneNumber: string;
   firstName: string;
   lastName: string;
-}
+};
 
 type User = {
   id: number;
@@ -12,24 +12,21 @@ type User = {
   phoneNumber: string;
   firstName: string;
   lastName: string;
-}
+};
 
 type UserEmailAndPhone = {
   email?: string;
   phoneNumber?: string;
-}
+};
 
 type userPatchData = {
-  email?: string;
+  newEmail?: string;
+  oldEmail?: string;
   phoneNumber?: string;
   firstName?: string;
   lastName?: string;
-  password?: string;
-}
+  newPassword?: string;
+  oldPassword?: string;
+};
 
-export {
-  UserPostData,
-  User,
-  UserEmailAndPhone,
-  userPatchData
-}
+export { UserPostData, User, UserEmailAndPhone, userPatchData };

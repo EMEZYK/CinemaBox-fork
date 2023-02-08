@@ -104,8 +104,7 @@ export class UserService {
           last_name as lastName,
           phone_number as phone,
           is_active as isActive,
-          role,
-          "password"
+          role
       FROM 
           users
       WHERE 
@@ -195,24 +194,101 @@ export class UserService {
 
   async updateUser(id: number, userPatchData: userPatchData) {
     try {
-      const { email, phoneNumber, firstName, lastName, password } =
-        userPatchData;
+      const {
+        newEmail,
+        oldEmail,
+        phoneNumber,
+        firstName,
+        lastName,
+        newPassword,
+        oldPassword,
+      } = userPatchData;
+
+      if (newEmail) {
+        const user = await this.getUser(id);
+
+        if (user?.data?.email !== oldEmail) {
+          return {
+            data: 'Adres email jest niepoprawny',
+            isError: true,
+          };
+        } else {
+          const userByEmail = await this.getUserByEmail(newEmail);
+
+          if (userByEmail) {
+            return {
+              data: 'Email jest już zajęty',
+              isError: true,
+            };
+          }
+
+          const result = await this.dbService.query(`
+            UPDATE
+                users
+            SET
+                email = ${newEmail ? `'${newEmail}'` : 'email'}
+            WHERE
+                user_id = ${id}
+          `);
+
+          return {
+            data: 'Poprawnie zmieniono adres email',
+            isError: false,
+          };
+        }
+      }
+
+      if (newPassword) {
+        const user = await this.dbService.query(`
+          SELECT
+              "password"
+          FROM
+              users
+          WHERE user_id = ${id}
+        `);
+
+        if (oldPassword === newPassword) {
+          return {
+            data: 'Nowe hasło jest takie samo jak stare',
+            isError: true,
+          };
+        }
+
+        if (user[0]?.password !== oldPassword) {
+          return {
+            data: 'Hasło jest niepoprawne',
+            isError: true,
+          };
+        } else {
+          const result = await this.dbService.query(`
+            UPDATE
+                users
+            SET
+                "password" = ${newPassword ? `'${newPassword}'` : '"password"'}
+            WHERE
+                user_id = ${id}
+          `);
+        }
+
+        return {
+          data: 'Poprawnie zmieniono hasło',
+          isError: false,
+        };
+      }
 
       const result = await this.dbService.query(`
         UPDATE
             users
         SET
-            email = ${email ? `'${email}'` : 'email'},
             phone_number = ${phoneNumber ? `'${phoneNumber}'` : 'phone_number'},
             first_name = ${firstName ? `'${firstName}'` : 'first_name'},
             last_name = ${lastName ? `'${lastName}'` : 'last_name'},
-            "password" = ${password ? `'${password}'` : '"password"'}
         WHERE
             user_id = ${id}
       `);
 
       return {
-        data: result,
+        data: 'Poprawnie zmieniono dane użytkownika',
         isError: false,
       };
     } catch (err) {
@@ -243,7 +319,5 @@ export class UserService {
     }
   }
 
-  async refreshToken(token: string) {
-    
-  }
+  async refreshToken(token: string) {}
 }

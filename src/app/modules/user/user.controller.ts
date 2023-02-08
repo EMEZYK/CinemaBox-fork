@@ -72,14 +72,17 @@ export class UserController {
     @Param('id') id: number,
     @Body() userUpdateDto: UserUpdateDto,
   ) {
-    const response = await this.userService.updateUser(id, userUpdateDto);
+    const { isError, data } = await this.userService.updateUser(
+      id,
+      userUpdateDto,
+    );
 
-    if (!response) {
-      throw new HttpException(ResponseDictionary.userNotUpdated, 400);
+    if (isError) {
+      throw new HttpException(data, 400);
     }
 
     return {
-      message: ResponseDictionary.userUpdated,
+      message: data,
     };
   }
 

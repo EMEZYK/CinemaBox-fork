@@ -1,10 +1,15 @@
-import { IsNotEmpty, IsOptional, IsString } from "class-validator";
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 export class UserUpdateDto {
   @IsNotEmpty()
   @IsOptional()
   @IsString()
-  email?: string;
+  oldEmail?: string;
+
+  @IsNotEmpty()
+  @IsOptional()
+  @IsString()
+  newEmail?: string;
 
   @IsNotEmpty()
   @IsOptional()
@@ -19,10 +24,15 @@ export class UserUpdateDto {
   @IsNotEmpty()
   @IsOptional()
   @IsString()
-  phoneNumber?: string;
+  phone?: string;
 
   @IsNotEmpty()
   @IsOptional()
   @IsString()
-  password?: string;
+  oldPassword?: string;
+
+  @IsNotEmpty()
+  @IsOptional()
+  @IsString()
+  newPassword?: string;
 }
