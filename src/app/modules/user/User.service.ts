@@ -104,7 +104,8 @@ export class UserService {
           last_name as lastName,
           phone_number as phone,
           is_active as isActive,
-          role
+          role,
+          "password"
       FROM 
           users
       WHERE 
