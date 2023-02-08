@@ -36,7 +36,7 @@ export class ReservationsController {
     console.log(isError, data);
 
     if (isError) {
-      throw new HttpException(ResponseDictionary.reservationNotCreated, 400);
+      throw new HttpException('Nie można zwrócić rezerwacji, która jest mniej niż 24h przed seansem', 400);
     }
 
     return {

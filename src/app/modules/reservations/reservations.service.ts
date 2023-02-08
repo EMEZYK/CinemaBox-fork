@@ -228,8 +228,6 @@ export class ReservationsService {
               ticket_no = ${ticketNo}
       `);
 
-      console.log(result);
-
       if (Array.isArray(result) && result.length > 0) {
         const showingDate = new Date(result[0].start);
         const now = new Date();
@@ -262,7 +260,9 @@ export class ReservationsService {
 
           return 'Rezerwacja została pomyślnie zwrócona';
         } else {
-          return 'Nie można zwrócić rezerwacji, która jest mniej niż 24h przed seansem';
+          return {
+            isError: true,
+          }
         }
       }
     } catch (err) {
