@@ -261,15 +261,21 @@ export class ReservationsService {
           return {
             isError: false,
             message: 'Rezerwacja została pomyślnie zwrócona',
-          }
+          };
         } else {
           return {
-            isError: true,
-          }
+            isTimeError: true,
+          };
         }
       }
+
+      return {
+        isError: true,
+      };
     } catch (err) {
-      return null;
+      return {
+        isError: true,
+      };
     }
   }
 }
