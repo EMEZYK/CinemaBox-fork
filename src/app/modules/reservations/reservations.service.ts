@@ -258,7 +258,10 @@ export class ReservationsService {
                   showing_id = ${result[0].showing_id}
           `);
 
-          return 'Rezerwacja została pomyślnie zwrócona';
+          return {
+            isError: false,
+            message: 'Rezerwacja została pomyślnie zwrócona',
+          }
         } else {
           return {
             isError: true,
