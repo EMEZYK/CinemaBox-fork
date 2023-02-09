@@ -56,14 +56,15 @@ export class PromoCodesController {
 
   @Patch(':id')
   async update(@Param('id') id: number, @Body() body) {
-    const response = await this.promoCodesService.update(id, body);
+    const { isError, data } = await this.promoCodesService.update(id, body);
 
-    if (!response) {
+    if (isError) {
       throw new HttpException(ResponseDictionary.promocodeNotUpdated, 400);
     }
 
     return {
       message: ResponseDictionary.promocodeUpdated,
+      promoCodes: data,
     };
   }
 
