@@ -72,7 +72,7 @@ export class UserController {
     @Param('id') id: number,
     @Body() userUpdateDto: UserUpdateDto,
   ) {
-    const { isError, data } = await this.userService.updateUser(
+    const { isError, data, accessToken } = await this.userService.updateUser(
       id,
       userUpdateDto,
     );
@@ -83,6 +83,7 @@ export class UserController {
 
     return {
       message: data,
+      accessToken,
     };
   }
 

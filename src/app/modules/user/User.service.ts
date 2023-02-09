@@ -3,6 +3,7 @@ import { config } from 'dotenv';
 
 import { DBService } from '../db/db.service';
 import { UserPostData, userPatchData } from './user.types';
+import { JwtService } from '@nestjs/jwt';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const jwt = require('jsonwebtoken');
@@ -11,7 +12,10 @@ config();
 
 @Injectable()
 export class UserService {
-  constructor(private readonly dbService: DBService) {}
+  constructor(
+    private readonly dbService: DBService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   async getMe(token: string) {
     const secret = process.env.SECRET;
@@ -223,6 +227,7 @@ export class UserService {
             };
           }
 
+          const payload = { email: newEmail };
           const result = await this.dbService.query(`
             UPDATE
                 users
@@ -233,6 +238,7 @@ export class UserService {
           `);
 
           return {
+            accessToken: this.jwtService.sign(payload),
             data: 'Poprawnie zmieniono adres email',
             isError: false,
           };
