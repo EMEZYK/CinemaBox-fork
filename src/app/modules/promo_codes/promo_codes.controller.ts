@@ -20,7 +20,7 @@ export class PromoCodesController {
 
   @Post()
   async createPromoCode(@Body() createPromoCodeDto: CreatePromoCodeDto) {
-    const { isError } = await this.promoCodesService.createPromoCode(
+    const { isError, data } = await this.promoCodesService.createPromoCode(
       createPromoCodeDto,
     );
 
@@ -30,6 +30,7 @@ export class PromoCodesController {
 
     return {
       message: ResponseDictionary.promocodeCreated,
+      promoCodes: data,
     };
   }
 

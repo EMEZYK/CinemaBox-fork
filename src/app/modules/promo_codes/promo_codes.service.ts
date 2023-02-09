@@ -20,8 +20,15 @@ export class PromoCodesService {
                 ('${code}', ${discount})
       `);
 
+      const updatedResult = await this.dbService.query(`
+            SELECT
+                *
+            FROM
+                promo_codes
+      `);
+
       return {
-        data: result[0],
+        data: updatedResult,
         isError: false,
       };
     } catch (error) {
