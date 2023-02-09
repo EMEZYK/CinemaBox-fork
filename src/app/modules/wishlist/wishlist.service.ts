@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DBService } from '../db/db.service';
 import { CreateWishlistDto } from './dto/create-wishlist.dto';
-import { UpdateWishlistDto } from './dto/update-wishlist.dto';
 
 @Injectable()
 export class WishlistService {
@@ -80,11 +79,22 @@ export class WishlistService {
     }
   }
 
-  update(id: number, updateWishlistDto: UpdateWishlistDto) {
-    return `This action updates a #${id} wishlist`;
-  }
+  async removeFromWishList(id: string) {
+    try {
+      const result = await this.dbService.query(`
+        DELETE FROM
+            wishlist
+        WHERE
+            wishlist.id = ${id}
+      `);
 
-  remove(id: number) {
-    return `This action removes a #${id} wishlist`;
+      return {
+        message: 'Usunięto film z ulubionych',
+      };
+    } catch (error) {
+      return {
+        isError: true,
+      };
+    }
   }
 }
