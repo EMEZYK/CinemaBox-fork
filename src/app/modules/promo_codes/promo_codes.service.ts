@@ -98,21 +98,24 @@ export class PromoCodesService {
               promo_id = ${id}
       `);
 
-      const updatedResult = await this.dbService.query(`
+      if (result) {
+        const updatedResult = await this.dbService.query(`
           SELECT
               promo_id as id,
               promo_code,
               value
           FROM
               promo_codes
-          WHERE
-              promo_id = ${id}
       `);
+        return {
+          data: updatedResult,
+          isError: false,
+        };
+      }
 
       return {
-        data: updatedResult,
-        isError: false,
-      };
+        isError: true,
+      }
     } catch (err) {
       return {
         isError: true,

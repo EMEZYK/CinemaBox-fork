@@ -69,7 +69,7 @@ const ResponseDictionary = {
   promocodeNotFound: 'Nie znaleziono kodu rabatowego o podanym id',
   promocodeCreated: 'Kod rabatowy został pomyślnie dodany',
   promocodeNotCreated: 'Wystąpił błąd podczas dodawania kodu rabatowego',
-  promocodeUpdated: 'Kod rabatowy został pomyślnie zaktualizowan',
+  promocodeUpdated: 'Kod rabatowy został pomyślnie zaktualizowany',
   promocodeNotUpdated: 'Wystąpił błąd podczas aktualizacji kodu rabatowego',
   promocodeDeleted: 'Kod rabatowy został pomyślnie usunięty',
   promocodeNotDeleted: 'Wystąpił błąd podczas usuwania kodu rabatowego',
