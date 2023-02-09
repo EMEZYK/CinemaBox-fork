@@ -55,7 +55,8 @@ export class WishlistService {
             wishlist.user_id,
             wishlist.movie_id,
             movies.title,
-            movies.img
+            movies.img,
+            movies.description
         FROM
             wishlist
         INNER JOIN movies ON wishlist.movie_id = movies.movie_id
