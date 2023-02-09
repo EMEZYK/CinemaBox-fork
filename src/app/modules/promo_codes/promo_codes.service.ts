@@ -113,8 +113,15 @@ export class PromoCodesService {
               promo_id = ${id}
       `);
 
+      const updatedResult = await this.dbService.query(`
+            SELECT
+                *
+            FROM
+                promo_codes
+      `);
+
       return {
-        data: result,
+        data: updatedResult,
         isError: false,
       };
     } catch (err) {
