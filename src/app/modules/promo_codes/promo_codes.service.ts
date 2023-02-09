@@ -22,7 +22,9 @@ export class PromoCodesService {
 
       const updatedResult = await this.dbService.query(`
             SELECT
-                *
+                promo_id as id,
+                promo_code,
+                value
             FROM
                 promo_codes
       `);
@@ -42,7 +44,9 @@ export class PromoCodesService {
     try {
       const result = await this.dbService.query(`
           SELECT
-              *
+              promo_id as id,
+              promo_code,
+              value
           FROM
               promo_codes
       `);
@@ -61,7 +65,9 @@ export class PromoCodesService {
     try {
       const result = await this.dbService.query(`
           SELECT
-              *
+              promo_id as id,
+              promo_code,
+              value
           FROM
               promo_codes
           WHERE
@@ -115,7 +121,9 @@ export class PromoCodesService {
 
       const updatedResult = await this.dbService.query(`
             SELECT
-                *
+                promo_id as id,
+                promo_code,
+                value
             FROM
                 promo_codes
       `);
