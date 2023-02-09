@@ -22,7 +22,7 @@ export class WishlistService {
 
       if (Array.isArray(check) && check.length > 0) {
         return {
-          message: 'Film jest już w ulubionych',
+          alreadyAdded: 'Film jest już w ulubionych',
         };
       }
 

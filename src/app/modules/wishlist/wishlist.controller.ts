@@ -20,7 +20,20 @@ export class WishlistController {
   @Public()
   @Post()
   async createWishList(@Body() createWishlistDto: CreateWishlistDto) {
-    return await this.wishlistService.createWishList(createWishlistDto);
+    const { alreadyAdded, message, isError } =
+      await this.wishlistService.createWishList(createWishlistDto);
+
+    if (isError) {
+      throw new HttpException('Coś poszło nie tak', 500);
+    }
+
+    if (alreadyAdded) {
+      throw new HttpException('Film jest już dodany do ulubionych', 400);
+    }
+
+    return {
+      message,
+    };
   }
 
   @Get()
