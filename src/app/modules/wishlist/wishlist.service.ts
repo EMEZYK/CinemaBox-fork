@@ -56,12 +56,10 @@ export class WishlistService {
             wishlist.user_id,
             wishlist.movie_id,
             movies.title,
-            movies.poster_path,
-            movies.release_date,
-            movies.vote_average
+            movies.img
         FROM
             wishlist
-        LEFT JOIN movies ON wishlist.movie_id = movies.id
+        INNER JOIN movies ON wishlist.movie_id = movies.id
         WHERE
             wishlist.user_id = ${id}
       `);
