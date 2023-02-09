@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  HttpException,
 } from '@nestjs/common';
 import { WishlistService } from './wishlist.service';
 import { CreateWishlistDto } from './dto/create-wishlist.dto';
@@ -28,8 +29,16 @@ export class WishlistController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.wishlistService.findOne(+id);
+  async getUserWishList(@Param('id') id: string) {
+    const { isError, result } = await this.wishlistService.getUserWishList(id);
+
+    if (isError) {
+      throw new HttpException('Nie masz ulubionych filmów', 404);
+    }
+
+    return {
+      wishlist: result,
+    };
   }
 
   @Patch(':id')

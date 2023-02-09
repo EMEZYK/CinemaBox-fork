@@ -48,8 +48,30 @@ export class WishlistService {
     return `This action returns all wishlist`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} wishlist`;
+  async getUserWishList(id: string) {
+    try {
+      const result = await this.dbService.query(`
+        SELECT
+            wishlist.id,
+            wishlist.user_id,
+            wishlist.movie_id,
+            movies.title,
+            movies.poster_path,
+            movies.release_date,
+            movies.vote_average
+        FROM
+            wishlist
+        LEFT JOIN movies ON wishlist.movie_id = movies.id
+        WHERE
+            wishlist.user_id = ${id}
+      `);
+
+      return result;
+    } catch (error) {
+      return {
+        isError: true,
+      };
+    }
   }
 
   update(id: number, updateWishlistDto: UpdateWishlistDto) {
