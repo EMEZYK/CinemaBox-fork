@@ -59,12 +59,20 @@ export class WishlistService {
             movies.img
         FROM
             wishlist
-        INNER JOIN movies ON wishlist.movie_id = movies.id
+        INNER JOIN movies ON wishlist.movie_id = movies.movie_id
         WHERE
             wishlist.user_id = ${id}
       `);
 
-      return result;
+      if (Array.isArray(result) && result.length > 0) {
+        return {
+          data: result,
+        };
+      }
+
+      return {
+        noWishlist: true,
+      };
     } catch (error) {
       return {
         isError: true,
