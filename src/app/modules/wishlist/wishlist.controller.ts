@@ -42,14 +42,10 @@ export class WishlistController {
 
   @Get(':id')
   async getUserWishList(@Param('id') id: string) {
-    const { isError, noWishlist, data } =
+    const { isError, data } =
       await this.wishlistService.getUserWishList(id);
 
     if (isError) {
-      throw new HttpException('Nie masz ulubionych filmów', 404);
-    }
-
-    if (noWishlist) {
       throw new HttpException('Nie masz ulubionych filmów', 404);
     }
 

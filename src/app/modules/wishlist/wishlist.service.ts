@@ -64,14 +64,8 @@ export class WishlistService {
             wishlist.user_id = ${id}
       `);
 
-      if (Array.isArray(result) && result.length > 0) {
-        return {
-          data: result,
-        };
-      }
-
       return {
-        noWishlist: true,
+        data: result,
       };
     } catch (error) {
       return {
