@@ -69,14 +69,15 @@ export class PromoCodesController {
 
   @Delete(':id')
   async remove(@Param('id') id: number) {
-    const response = await this.promoCodesService.remove(id);
+    const { isError, data } = await this.promoCodesService.remove(id);
 
-    if (!response) {
+    if (isError) {
       throw new HttpException(ResponseDictionary.promocodeNotDeleted, 400);
     }
 
     return {
       message: ResponseDictionary.promocodeDeleted,
+      promoCodes: data,
     };
   }
 }
