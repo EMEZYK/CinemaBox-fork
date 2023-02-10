@@ -44,9 +44,14 @@ export class RatingsService {
         WHERE movie_id = ${id}
       `);
 
+      const response = {
+        movie_id: +id,
+        rating: averageRating,
+      };
+
       return {
         isError: false,
-        data: averageRating,
+        data: response,
       };
     } catch (err) {
       console.log(err);
