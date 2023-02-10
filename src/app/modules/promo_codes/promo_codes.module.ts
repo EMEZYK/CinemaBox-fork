@@ -7,6 +7,6 @@ import { DbModule } from '../db/db.module';
   imports: [DbModule],
   controllers: [PromoCodesController],
   providers: [PromoCodesService],
-  exports: [PromoCodesService]
+  exports: [PromoCodesService],
 })
 export class PromoCodesModule {}

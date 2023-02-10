@@ -96,6 +96,16 @@ export class MoviesService {
       )}', ${isPremiere}, '${duration}', ARRAY['${genre}'], '${age}', '${img}', ${rating})
         RETURNING movie_id as id
       `);
+
+      await this.dbService.query(`
+        INSERT
+        INTO
+            ratings
+                (movie_id, rating)
+        VALUES
+            (${result[0].id}, ${rating})
+      `);
+
       return {
         data: result[0],
         isError: false,
