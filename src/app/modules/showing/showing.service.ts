@@ -30,6 +30,22 @@ export class ShowingService {
     const startTime = dayjs(data.start);
     const endTime = dayjs(data.start).add(+duration[0].duration + 15, 'minute');
 
+    const nextShowing = await this.dbService.query(`
+      SELECT start
+      FROM showings
+      WHERE hall_id = ${data.hall_id}
+      AND start > '${data.start}'
+      ORDER BY start ASC
+      LIMIT 1
+    `);
+
+    if (nextShowing.length > 0) {
+      const nextShowingStartTime = dayjs(nextShowing[0].start);
+      if (endTime.isAfter(nextShowingStartTime)) {
+        throw new HttpException('Nie można dodać filmu o tej godzinie', 400);
+      }
+    }
+
     const middleHours = [];
 
     for (
