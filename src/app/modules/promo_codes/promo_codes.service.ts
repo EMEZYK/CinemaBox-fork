@@ -88,8 +88,10 @@ export class PromoCodesService {
     try {
       const { code, discount } = body;
 
-      const promoCode = await this.getPromoCode(id);
-      if (promoCode.promo_code !== code) {
+      const promoCode = await this.getAllPromoCodes();
+
+      const isCodeExist = promoCode.find((item) => item.promo_code === code);
+      if (!isCodeExist) {
         const result = await this.dbService.query(`
           UPDATE
               promo_codes
