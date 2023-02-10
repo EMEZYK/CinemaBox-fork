@@ -88,7 +88,9 @@ export class PromoCodesService {
     try {
       const { code, discount } = body;
 
-      const result = await this.dbService.query(`
+      const promoCode = await this.getPromoCode(id);
+      if (promoCode.promo_code !== code) {
+        const result = await this.dbService.query(`
           UPDATE
               promo_codes
           SET
@@ -98,8 +100,8 @@ export class PromoCodesService {
               promo_id = ${id}
       `);
 
-      if (result) {
-        const updatedResult = await this.dbService.query(`
+        if (result) {
+          const updatedResult = await this.dbService.query(`
           SELECT
               promo_id as id,
               promo_code,
@@ -107,15 +109,20 @@ export class PromoCodesService {
           FROM
               promo_codes
       `);
+          return {
+            data: updatedResult,
+            isError: false,
+          };
+        }
+      } else {
         return {
-          data: updatedResult,
-          isError: false,
+          isNameError: true,
         };
       }
 
       return {
         isError: true,
-      }
+      };
     } catch (err) {
       return {
         isError: true,

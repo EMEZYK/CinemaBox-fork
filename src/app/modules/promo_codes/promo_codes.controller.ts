@@ -56,10 +56,17 @@ export class PromoCodesController {
 
   @Patch(':id')
   async update(@Param('id') id: number, @Body() body) {
-    const { isError, data } = await this.promoCodesService.update(id, body);
+    const { isError, isNameError, data } = await this.promoCodesService.update(
+      id,
+      body,
+    );
 
     if (isError) {
       throw new HttpException(ResponseDictionary.promocodeNotUpdated, 400);
+    }
+
+    if (isNameError) {
+      throw new HttpException('Nazwa kodu jest już zajęta', 400);
     }
 
     return {
