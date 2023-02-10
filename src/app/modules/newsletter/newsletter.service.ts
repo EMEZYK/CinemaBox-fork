@@ -6,7 +6,13 @@ export class NewsletterService {
   constructor(private readonly dbService: DBService) {}
   async getNewsletter() {
     try {
-      const result = await this.dbService.query('SELECT * FROM newsletter');
+      const result = await this.dbService.query(`
+        SELECT
+            newsletter_id AS id,
+            email
+        FROM
+            newsletter
+       `);
 
       return {
         isError: false,
@@ -24,7 +30,8 @@ export class NewsletterService {
     try {
       const result = await this.dbService.query(`
         SELECT
-            *
+            newsletter_id AS id,
+            email
         FROM
             newsletter
         WHERE
@@ -59,7 +66,8 @@ export class NewsletterService {
         WHERE
             newsletter_id = ${id}
         RETURNING
-            *
+            newsletter_id AS id,
+            email
       `);
 
       return {
