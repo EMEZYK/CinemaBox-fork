@@ -46,7 +46,7 @@ export class RatingsService {
 
       return {
         isError: false,
-        data: 'Pomyślnie oceniono film',
+        data: averageRating,
       };
     } catch (err) {
       console.log(err);
