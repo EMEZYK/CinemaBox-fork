@@ -99,9 +99,17 @@ export class NewsletterService {
             newsletter_id = ${id}
       `);
 
+      const newResult = await this.dbService.query(`
+        SELECT
+            newsletter_id AS id,
+            email
+        FROM
+            newsletter
+      `);
+
       return {
         isError: false,
-        data: result,
+        data: newResult,
       };
     } catch (error) {
       return {
