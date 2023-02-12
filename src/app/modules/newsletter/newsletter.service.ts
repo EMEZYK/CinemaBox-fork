@@ -26,6 +26,37 @@ export class NewsletterService {
     }
   }
 
+  async getNewsletterById(id: number) {
+    try {
+      const result = await this.dbService.query(`
+        SELECT
+            newsletter_id AS id,
+            email
+        FROM
+            newsletter
+        WHERE
+            newsletter_id = ${id}
+       `);
+
+      if (!result.length) {
+        return {
+          isError: true,
+          data: null,
+        };
+      }
+
+      return {
+        isError: false,
+        data: result[0],
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        data: error,
+      };
+    }
+  }
+
   async checkIfEmailExists(email: string) {
     try {
       const result = await this.dbService.query(`
@@ -57,6 +88,29 @@ export class NewsletterService {
     }
   }
 
+  async updateNewsletter(id: number, email: string) {
+    try {
+      const result = await this.dbService.query(`
+        UPDATE
+            newsletter
+        SET
+            email = '${email}'
+        WHERE
+            newsletter_id = ${id}
+      `);
+
+      return {
+        isError: false,
+        data: result,
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        data: error,
+      };
+    }
+  }
+
   async remove(id: number) {
     try {
       const result = await this.dbService.query(`
@@ -65,9 +119,6 @@ export class NewsletterService {
             newsletter
         WHERE
             newsletter_id = ${id}
-        RETURNING
-            newsletter_id AS id,
-            email
       `);
 
       return {

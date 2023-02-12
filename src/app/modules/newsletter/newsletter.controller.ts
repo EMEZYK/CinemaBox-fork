@@ -27,6 +27,39 @@ export class NewsletterController {
     };
   }
 
+  @Get(':id')
+  async getNewsletterById(@Param('id') id: number) {
+    const { isError, data } = await this.newsletterService.getNewsletterById(
+      id,
+    );
+
+    if (isError) {
+      throw new HttpException('Nie udało się pobrać newsletter', 400);
+    }
+
+    return {
+      newsletter: data,
+    };
+  }
+
+  @Patch(':id')
+  async updateNewsletter(@Param('id') id: number, @Body() body) {
+    const { email } = body;
+
+    const { isError, data } = await this.newsletterService.updateNewsletter(
+      id,
+      email,
+    );
+
+    if (isError) {
+      throw new HttpException('Nie udało się zaktualizować newsletter', 400);
+    }
+
+    return {
+      newsletter: data,
+    };
+  }
+
   @Post()
   async checkIfEmailExists(@Body() body) {
     const { isError, data } = await this.newsletterService.checkIfEmailExists(
