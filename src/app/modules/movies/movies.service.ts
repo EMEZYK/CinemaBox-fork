@@ -25,9 +25,7 @@ export class MoviesService {
       `);
 
       if (Array.isArray(result) && result.length > 0) {
-        return {
-          data: result[0],
-        };
+        return result[0];
       }
     } catch (err) {
       return null;
