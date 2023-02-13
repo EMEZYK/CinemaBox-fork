@@ -65,14 +65,15 @@ export class MoviesController {
 
   @Delete(':id')
   async deleteMovie(@Param('id') id: number) {
-    const response = await this.movieService.deleteMovie(id);
+    const { isError, data } = await this.movieService.deleteMovie(id);
 
-    if (!response) {
+    if (isError) {
       throw new HttpException(ResponseDictionary.movieNotDeleted, 400);
     }
 
     return {
       message: ResponseDictionary.movieDeleted,
+      movies: data,
     };
   }
 
@@ -81,14 +82,18 @@ export class MoviesController {
     @Param('id') id: number,
     @Body() updateMovieDto: updateMovieDto,
   ) {
-    const response = await this.movieService.updateMovie(id, updateMovieDto);
+    const { isError, data } = await this.movieService.updateMovie(
+      id,
+      updateMovieDto,
+    );
 
-    if (!response) {
+    if (isError) {
       throw new HttpException(ResponseDictionary.movieNotUpdated, 400);
     }
 
     return {
       message: ResponseDictionary.movieUpdated,
+      movies: data,
     };
   }
 }

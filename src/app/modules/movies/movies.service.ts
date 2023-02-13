@@ -104,13 +104,6 @@ export class MoviesService {
             (${result[0].id}, ${rating})
       `);
 
-      const updatedMovies = this.dbService.query(`
-        SELECT
-            *
-        FROM
-            movies
-      `)
-
       return {
         data: result[0],
         isError: false,
@@ -216,22 +209,30 @@ export class MoviesService {
       }
 
       const result = await this.dbService.query(`
-          SELECT  movie_id as id,
-                  title,
-                  description,
-                  is_premiere as isPremiere,
-                  duration,
-                  genre,
-                  age,
-                  short_description as shortDescription,
-                  img,
-                  rating
-          FROM movies
-          ORDER BY movie_id
+        DELETE
+        FROM
+            movies
+        WHERE
+            movie_id = ${id}
+      `);
+
+      const updatedMovies = await this.dbService.query(`
+        SELECT  movie_id as id,
+              title,
+              description,
+              is_premiere as isPremiere,
+              duration,
+              genre,
+              age,
+              short_description as shortDescription,
+              img,
+              rating
+        FROM movies
+        ORDER BY movie_id
       `);
 
       return {
-        data: result,
+        data: updatedMovies,
         isError: false,
       };
     } catch (err) {
