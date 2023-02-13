@@ -60,6 +60,7 @@ export class MoviesController {
 
     return {
       message: ResponseDictionary.movieCreated,
+      movies: data,
     };
   }
 
