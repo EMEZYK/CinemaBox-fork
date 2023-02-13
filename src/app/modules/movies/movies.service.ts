@@ -104,6 +104,13 @@ export class MoviesService {
             (${result[0].id}, ${rating})
       `);
 
+      const updatedMovies = this.dbService.query(`
+        SELECT
+            *
+        FROM
+            movies
+      `)
+
       return {
         data: result[0],
         isError: false,
@@ -151,9 +158,76 @@ export class MoviesService {
 
   async deleteMovie(id: number) {
     try {
+      const showings = await this.dbService.query(`
+        SELECT
+            *
+        FROM
+            showings
+        WHERE
+            movie_id = ${id}
+      `);
+
+      if (showings.length) {
+        await this.dbService.query(`
+          DELETE
+          FROM
+              showings
+          WHERE
+              movie_id = ${id}
+        `);
+      }
+
+      const wishlist = await this.dbService.query(`
+        SELECT
+            *
+        FROM
+            wishlist
+        WHERE
+            movie_id = ${id}
+      `);
+
+      if (wishlist.length) {
+        await this.dbService.query(`
+          DELETE
+          FROM
+              wishlist
+          WHERE
+              movie_id = ${id}
+        `);
+      }
+
+      const ratings = await this.dbService.query(`
+        SELECT
+            *
+        FROM
+            ratings
+        WHERE
+            movie_id = ${id}
+      `);
+
+      if (ratings.length) {
+        await this.dbService.query(`
+          DELETE
+          FROM
+              ratings
+          WHERE
+              movie_id = ${id}
+        `);
+      }
+
       const result = await this.dbService.query(`
-        DELETE FROM movies
-        WHERE movie_id = ${id}
+          SELECT  movie_id as id,
+                  title,
+                  description,
+                  is_premiere as isPremiere,
+                  duration,
+                  genre,
+                  age,
+                  short_description as shortDescription,
+                  img,
+                  rating
+          FROM movies
+          ORDER BY movie_id
       `);
 
       return {
