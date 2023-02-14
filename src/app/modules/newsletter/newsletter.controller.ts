@@ -9,6 +9,7 @@ import {
   HttpException,
 } from '@nestjs/common';
 import { NewsletterService } from './newsletter.service';
+import { Public } from "src/app/declarations/isPublic";
 
 @Controller('newsletter')
 export class NewsletterController {
@@ -60,6 +61,7 @@ export class NewsletterController {
     };
   }
 
+  @Public()
   @Post()
   async checkIfEmailExists(@Body() body) {
     const { isError, data } = await this.newsletterService.checkIfEmailExists(
