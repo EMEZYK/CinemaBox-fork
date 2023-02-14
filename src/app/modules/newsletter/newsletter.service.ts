@@ -119,6 +119,37 @@ export class NewsletterService {
     }
   }
 
+  async updateNewsletterByEmail(email: string, newsletter: boolean) {
+    try {
+      const result = await this.dbService.query(`
+        UPDATE
+            newsletter
+        SET
+            newsletter = ${newsletter}
+        WHERE
+            email = '${email}'
+      `);
+
+      const newResult = await this.dbService.query(`
+        SELECT
+            newsletter_id AS id,
+            email
+        FROM
+            newsletter
+      `);
+
+      return {
+        isError: false,
+        data: newResult,
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        data: error,
+      };
+    }
+  }
+
   async remove(id: number) {
     try {
       const result = await this.dbService.query(`

@@ -9,7 +9,7 @@ import {
   HttpException,
 } from '@nestjs/common';
 import { NewsletterService } from './newsletter.service';
-import { Public } from "src/app/declarations/isPublic";
+import { Public } from 'src/app/declarations/isPublic';
 
 @Controller('newsletter')
 export class NewsletterController {
@@ -51,6 +51,22 @@ export class NewsletterController {
       id,
       email,
     );
+
+    if (isError) {
+      throw new HttpException('Nie udało się zaktualizować newsletter', 400);
+    }
+
+    return {
+      newsletter: data,
+    };
+  }
+
+  @Patch(':email')
+  async updateNewsletterByEmail(@Param('email') email: string, @Body() body) {
+    const { newsletter } = body;
+
+    const { isError, data } =
+      await this.newsletterService.updateNewsletterByEmail(email, newsletter);
 
     if (isError) {
       throw new HttpException('Nie udało się zaktualizować newsletter', 400);
