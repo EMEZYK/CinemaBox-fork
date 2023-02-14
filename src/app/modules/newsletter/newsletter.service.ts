@@ -169,4 +169,26 @@ export class NewsletterService {
       };
     }
   }
+
+  async removeByEmail(email: string) {
+    try {
+      const result = await this.dbService.query(`
+        DELETE
+        FROM
+            newsletter
+        WHERE
+            email = '${email}'
+      `);
+
+      return {
+        isError: false,
+        data: result,
+      };
+    } catch (error) {
+      return {
+        isError: true,
+        data: error,
+      };
+    }
+  }
 }

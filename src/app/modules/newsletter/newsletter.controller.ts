@@ -106,4 +106,19 @@ export class NewsletterController {
       newsletter: data,
     };
   }
+
+  @Delete()
+  async removeByEmail(@Body() body) {
+    const { isError, data } = await this.newsletterService.removeByEmail(
+      body.email,
+    );
+
+    if (isError) {
+      throw new HttpException('Nie udało się usunąć newsletter', 400);
+    }
+
+    return {
+      newsletter: data,
+    };
+  }
 }
