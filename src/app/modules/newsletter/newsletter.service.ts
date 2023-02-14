@@ -119,15 +119,13 @@ export class NewsletterService {
     }
   }
 
-  async updateNewsletterByEmail(email: string, newsletter: boolean) {
+  async createNewsletter(email: string) {
     try {
       const result = await this.dbService.query(`
-        UPDATE
-            newsletter
-        SET
-            newsletter = ${newsletter}
-        WHERE
-            email = '${email}'
+        INSERT INTO
+            newsletter (email)
+        VALUES
+            ('${email}')
       `);
 
       const newResult = await this.dbService.query(`

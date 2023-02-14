@@ -61,15 +61,16 @@ export class NewsletterController {
     };
   }
 
-  @Patch(':email')
-  async updateNewsletterByEmail(@Param('email') email: string, @Body() body) {
-    const { newsletter } = body;
+  @Post('create')
+  async createNewsletter(@Body() body) {
+    const { email } = body;
 
-    const { isError, data } =
-      await this.newsletterService.updateNewsletterByEmail(email, newsletter);
+    const { isError, data } = await this.newsletterService.createNewsletter(
+      email,
+    );
 
     if (isError) {
-      throw new HttpException('Nie udało się zaktualizować newsletter', 400);
+      throw new HttpException('Nie udało się utworzyć newsletter', 400);
     }
 
     return {
