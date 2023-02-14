@@ -13,7 +13,7 @@ type MoviePostData = {
 type MovieUpdateData = {
   title?: string;
   description?: string;
-  genre?: string[];
+  img?: string;
   age?: string;
 };
 

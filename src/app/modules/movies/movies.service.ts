@@ -135,7 +135,7 @@ export class MoviesService {
 
   async updateMovie(id: number, movieUpdateData: MovieUpdateData) {
     try {
-      const { title, description, genre, age } = movieUpdateData;
+      const { title, description, img, age } = movieUpdateData;
 
       const result = await this.dbService.query(`
         UPDATE
@@ -148,7 +148,7 @@ export class MoviesService {
                 ? `'${description.slice(0, 100)}'`
                 : 'short_description'
             },
-            genere = ${genre ? `'${genre}'` : 'genre'},
+            img = ${img ? `'${img}'` : 'genre'},
             age = ${age ? `'${age}'` : 'age'}
         WHERE
             movie_id = ${id}
