@@ -107,7 +107,7 @@ export class NewsletterController {
     };
   }
 
-  @Delete()
+  @Post('delete')
   async removeByEmail(@Body() body) {
     const { isError, data } = await this.newsletterService.removeByEmail(
       body.email,
