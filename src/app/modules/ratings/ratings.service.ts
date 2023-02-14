@@ -7,8 +7,6 @@ export class RatingsService {
 
   async updateRating(id: number, rating: number, user_id: number) {
     try {
-      // if user_id is in user_id array, return error
-
       const isUserInArray = await this.dbService.query(`
         SELECT user_id
         FROM ratings

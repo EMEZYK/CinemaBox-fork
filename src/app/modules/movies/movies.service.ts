@@ -91,9 +91,11 @@ export class MoviesService {
             ('${title}', '${description}', '${description.slice(
         0,
         100,
-      )}', ${isPremiere}, '${duration}', ARRAY['${genre}'], '${age}', '${img}', ${rating})
+      )}', ${isPremiere}, '${duration}', '{${genre}}', '${age}', '${img}', ${rating})
         RETURNING movie_id as id
       `);
+
+      const ratingArray = [rating];
 
       await this.dbService.query(`
         INSERT
@@ -101,7 +103,7 @@ export class MoviesService {
             ratings
                 (movie_id, rating)
         VALUES
-            (${result[0].id}, ${rating})
+            (${result[0].id}, '{${ratingArray}}')
       `);
 
       const updatedMovies = await this.dbService.query(`
@@ -146,7 +148,7 @@ export class MoviesService {
                 ? `'${description.slice(0, 100)}'`
                 : 'short_description'
             },
-            genere = ${genre ? `'${genre}'` : 'category'},
+            genere = ${genre ? `'${genre}'` : 'genre'},
             age = ${age ? `'${age}'` : 'age'}
         WHERE
             movie_id = ${id}
