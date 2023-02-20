@@ -101,9 +101,9 @@ export class MoviesService {
         INSERT
         INTO
             ratings
-                (movie_id, rating)
+                (movie_id, rating, user_id)
         VALUES
-            (${result[0].id}, '{${ratingArray}}')
+            (${result[0].id}, '{${ratingArray}}', '{}')
       `);
 
       const updatedMovies = await this.dbService.query(`
