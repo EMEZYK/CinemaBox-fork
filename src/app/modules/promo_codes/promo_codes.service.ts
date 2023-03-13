@@ -61,45 +61,25 @@ export class PromoCodesService {
     }
   }
 
-  async getPromoCode(id: number) {
-    try {
-      const result = await this.dbService.query(`
-          SELECT
-              promo_id as id,
-              promo_code,
-              value
-          FROM
-              promo_codes
-          WHERE
-              promo_id = ${id}
-      `);
-
-      if (Array.isArray(result) && result.length > 0) {
-        return result[0];
-      }
-
-      return null;
-    } catch (err) {
-      return null;
-    }
-  }
-
   async update(id: number, body) {
     try {
-      const { code, discount } = body;
+      const { promo_code, discount } = body;
 
       const promoCode = await this.getAllPromoCodes();
 
-      const isCodeExist = promoCode.find((item) => item.promo_code === code);
+      const isCodeExist = promoCode.find(
+        (item) => item.promo_code === promo_code,
+      );
+
       if (!isCodeExist) {
         const result = await this.dbService.query(`
-          UPDATE
-              promo_codes
-          SET
-              promo_code = ${code ? `'${code}'` : 'promo_code'},
-              value = ${discount ? `${discount}` : 'value'}
-          WHERE
-              promo_id = ${id}
+        UPDATE
+        promo_codes
+    SET
+        promo_code = ${promo_code ? `'${promo_code}'` : 'promo_code'},
+        value = ${discount ? `${discount}` : 'value'}
+    WHERE
+        promo_id = ${id}
       `);
 
         if (result) {
@@ -129,6 +109,29 @@ export class PromoCodesService {
       return {
         isError: true,
       };
+    }
+  }
+
+  async getPromoCode(id: number) {
+    try {
+      const result = await this.dbService.query(`
+          SELECT
+              promo_id as id,
+              promo_code,
+              value
+          FROM
+              promo_codes
+          WHERE
+              promo_id = ${id}
+      `);
+
+      if (Array.isArray(result) && result.length > 0) {
+        return result[0];
+      }
+
+      return null;
+    } catch (err) {
+      return null;
     }
   }
 

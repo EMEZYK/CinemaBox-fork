@@ -55,7 +55,10 @@ export class PromoCodesController {
   }
 
   @Patch(':id')
-  async update(@Param('id') id: number, @Body() body) {
+  async update(
+    @Param('id') id: number,
+    @Body() body: { promo_code: string; value: number },
+  ) {
     const { isError, isNameError, data } = await this.promoCodesService.update(
       id,
       body,

@@ -15,7 +15,7 @@ async function bootstrap() {
 
   app.enableCors();
   app.setGlobalPrefix(`api/${process.env.API_VERSION}`);
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
 
   const con = new DocumentBuilder()
     .setTitle('Cinema-box')

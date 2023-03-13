@@ -73,6 +73,7 @@ const ResponseDictionary = {
   promocodeNotUpdated: 'Wystąpił błąd podczas aktualizacji kodu rabatowego',
   promocodeDeleted: 'Kod rabatowy został pomyślnie usunięty',
   promocodeNotDeleted: 'Wystąpił błąd podczas usuwania kodu rabatowego',
-} as const
+  promocodeAlreadyExists: 'Ten kod zniżkowy już istnieje',
+} as const;
 
-export default ResponseDictionary
+export default ResponseDictionary;
