@@ -74,6 +74,12 @@ const ResponseDictionary = {
   promocodeDeleted: 'Kod rabatowy został pomyślnie usunięty',
   promocodeNotDeleted: 'Wystąpił błąd podczas usuwania kodu rabatowego',
   promocodeAlreadyExists: 'Ten kod zniżkowy już istnieje',
+
+  //reviews
+  reviewsError: 'Nie udało się pobrać recenzji',
+  reviewNotFound: 'Nie znaleziono recenzji',
+  reviewCreated: 'Recenzja została pomyślnie dodana',
+  reviewNotCreated: 'Wystąpił błąd podczas dodawania review',
 } as const;
 
 export default ResponseDictionary;

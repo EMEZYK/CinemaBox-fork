@@ -15,6 +15,7 @@ import { PromoCodesModule } from 'src/app/modules/promo_codes/promo_codes.module
 import { WishlistModule } from './modules/wishlist/wishlist.module';
 import { NewsletterModule } from './modules/newsletter/newsletter.module';
 import { RatingsModule } from './modules/ratings/ratings.module';
+import { ReviewsModule } from './modules/reviews/reviews.module';
 
 @Module({
   imports: [
@@ -31,6 +32,7 @@ import { RatingsModule } from './modules/ratings/ratings.module';
     WishlistModule,
     NewsletterModule,
     RatingsModule,
+    ReviewsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

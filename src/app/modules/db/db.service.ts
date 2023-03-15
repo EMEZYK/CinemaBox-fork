@@ -26,7 +26,8 @@ export class DBService {
       const response = await DBService.getDBPool().query(query);
 
       return response.rows;
-    } catch {
+    } catch (err) {
+      console.log(err);
       throw new HttpException('Błąd połączenia z bazą danych', 500);
     }
   }

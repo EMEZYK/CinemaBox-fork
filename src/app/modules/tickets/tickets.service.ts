@@ -7,9 +7,20 @@ import { UpdateTicketDto } from './dto/update-ticket.dto';
 @Injectable()
 export class TicketsService {
   constructor(private readonly dbService: DBService) {}
-  create(createTicketDto: CreateTicketDto) {
-    return 'This action adds a new ticket';
-  }
+
+  async create(createTicketDto: CreateTicketDto) {
+    const { ticket_type_id, name, price, description } = createTicketDto;
+
+    const result = await this.dbService.query(`
+    INSERT
+    INTO
+    ticket_types(ticket_type_id, name, price, description)
+    VALUES( '${ticket_type_id}', '${name}', '${price}', '${description}')
+
+    `);
+
+    return result[0];
+  } //to do
 
   async getTickets() {
     try {
@@ -19,10 +30,11 @@ export class TicketsService {
         FROM
             ticket_types
         ORDER BY
-            price
+            price  
         DESC
       `);
-
+      //segregacja po cenie
+      //z tabeli ticket_types
       if (Array.isArray(result) && result.length > 0) {
         return result;
       }
